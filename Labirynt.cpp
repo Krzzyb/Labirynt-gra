@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <windows.h>
 #include <cwchar>
+#include <stdlib.h>
 using namespace std;
 void kolory(int k) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -67,6 +68,10 @@ void prettyShow(int tablica[40][20], int x, int y) {
                 if (tablica[j][i] == 4){
                     kolory(108);
                     cout << char(127);
+                }
+                if (tablica[j][i] == 5){
+                    kolory(128);
+                    cout << char(158);
                 }
             }
             
@@ -196,8 +201,7 @@ void menu(int tabela [40][20], int x, int y, int lives){
                 system("CLS");
                 break;
             case 3:
-                system("CLS");
-                break;
+                exit(0);
             }
         }
 
@@ -206,6 +210,7 @@ void menu(int tabela [40][20], int x, int y, int lives){
 }
 void przebieg(int tabela[40][20], int lives){
     int x = 0, y = 0;
+    int setlives = lives;
     livescounter(lives);
     cout << endl;
     prettyShow(tabela,x,y);
@@ -226,10 +231,14 @@ void przebieg(int tabela[40][20], int lives){
             else if (x >= rozmiarx) x = rozmiarx - 1;
             system("CLS");
             if(tabela[x][y] == 2){
+                tabela[x][y] = 5;
                 lives--;
             }
             if(tabela[x][y] == 3){
                 
+            }
+            if(tabela[x][y] == 4){
+                lives = setlives;
             }
             if( x == 39 && y == 19){
                 cout<<"koniec gry";
@@ -300,8 +309,7 @@ void startMenu(int tabela [40][20] = {0}){
                 mainOptions(size);
                 break;
             case 3:
-                system("CLS");
-                break;
+                exit(0);
             }
         }
 
