@@ -151,14 +151,30 @@ void menu(int tabela [40][20], int x, int y, int lives){
     while (true){
         system("CLS");
         cout << "____MENU____\n";
-        if (n == 0) cout << " " << char(175) << " ";
+        if (n == 0) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
         cout << "Kontynuuj\n";
-        if (n == 1) cout << " " << char(175) << " ";
+        kolory(7);
+        if (n == 1) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
         cout << "Zapisz gre\n";
-        if (n == 2) cout << " " << char(175) << " ";
+        kolory(7);
+        if (n == 2) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
         cout << "Zaladuj gre\n";
-        if (n == 3) cout << " " << char(175) << " ";
+        kolory(7);
+        if (n == 3) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
         cout << "Wyjdz z gry\n";
+        kolory(7);
         int i = getch();
         if(i == 0 || i == 224){
             i = getch();
