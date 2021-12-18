@@ -117,12 +117,11 @@ void livescounter(int lives){
     }
 }
 
-void menu(){
+void menu(int tabela [40][20], int x, int y, int lives){
     system("CLS");
     kolory(7);
     int n = 0;
     while (true){
-        
         system("CLS");
         cout << "____MENU____\n";
         if (n == 0) cout << " " << char(16) << " ";
@@ -137,7 +136,26 @@ void menu(){
         if(i == 0 || i == 224){
             i = getch();
             if (i == 72 && n > 0) n--;
-            else if (i == 80 && n <= 3) n++;
+            else if (i == 80 && n < 3) n++;
+        }
+        if(i == 13){
+            switch (n){
+            case 0:
+                system("CLS");
+                livescounter(lives);
+                cout << endl;
+                prettyShow(tabela,x,y);
+                return;
+            case 1:
+                system("CLS");
+                break;
+            case 2:
+                system("CLS");
+                break;
+            case 3:
+                system("CLS");
+                break;
+            }
         }
 
     }
@@ -151,13 +169,13 @@ void przebieg(int tabela[40][20], int lives){
      while (lives>0) {
         int rozmiary = 20, rozmiarx = 40;
         int i = getch();
-        if (i == 27) menu();
+        if (i == 27) menu(tabela, x, y, lives);
         if (i == 0 || i == 224){
             i = getch();
             if (i == 72) y--;
             else if (i == 80) y++;
             else if (i == 75) x--;
-            else if (i == 77) x++;
+             else if (i == 77) x++;
             
             if (y < 0) y = 0;
             else if (y >= rozmiary) y = rozmiary - 1;
