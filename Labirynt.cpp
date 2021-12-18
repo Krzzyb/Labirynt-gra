@@ -84,6 +84,21 @@ void randPath(int tabela[40][20] = {0}) {
         }
     }
 }
+void newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives){
+    system("CLS");
+    cout << "___Nowa gra___\n" << "wybierz opcje:\n";
+    cout << "Ile bomb?  -  ";
+    cin >> bombs;
+    cout << endl;
+    cout << "Ile niespodzianek?  -  ";
+    cin >> boxes;
+    cout << endl;
+    cout << "Ile szpitali?  -  ";
+    cin >> hospitals; 
+    cout << endl;
+    cout << "Ile zyc?  -  ";
+    cin >> lives;
+}
 void randItems(int tabela[40][20], int bombs, int boxes, int hospitals) {
     srand(time(NULL));
     int X = 0, Y = 0;
@@ -116,6 +131,7 @@ void livescounter(int lives){
         cout<<char(3);
     }
 }
+
 
 void menu(int tabela [40][20], int x, int y, int lives){
     system("CLS");
@@ -175,7 +191,7 @@ void przebieg(int tabela[40][20], int lives){
             if (i == 72) y--;
             else if (i == 80) y++;
             else if (i == 75) x--;
-             else if (i == 77) x++;
+            else if (i == 77) x++;
             
             if (y < 0) y = 0;
             else if (y >= rozmiary) y = rozmiary - 1;
@@ -184,6 +200,9 @@ void przebieg(int tabela[40][20], int lives){
             system("CLS");
             if(tabela[x][y] == 2){
                 lives--;
+            }
+            if(tabela[x][y] == 3){
+                
             }
             if( x == 39 && y == 19){
                 cout<<"koniec gry";
@@ -195,11 +214,59 @@ void przebieg(int tabela[40][20], int lives){
         }
     }
 }
+void mainOptions(int &size){
+    cout << "___ main Options ___\n";
+    cout << "Wielkosc tekstu: - \n";
+    cin >> size;
+    textSize(size);
+}
+void startMenu(int tabela [40][20] = {0}){
+    kolory(7);
+    int n = 0;
+    int bombs, boxes, hospitals, lives, size;
+    while (true){
+        system("CLS");
+        cout << "____main MENU____\n";
+        if (n == 0) cout << " " << char(16) << " ";
+        cout << "Nowa gra\n";
+        if (n == 1) cout << " " << char(16) << " ";
+        cout << "Zaladuj gre\n";
+        if (n == 2) cout << " " << char(16) << " ";
+        cout << "Opcje\n";
+        if (n == 3) cout << " " << char(16) << " ";
+        cout << "Wyjdz z gry\n";
+        int i = getch();
+        if(i == 0 || i == 224){
+            i = getch();
+            if (i == 72 && n > 0) n--;
+            else if (i == 80 && n < 3) n++;
+        }
+        if(i == 13){
+            switch (n){
+            case 0:
+                newGameOptions(bombs, boxes, hospitals, lives);
+                system("CLS");
+                randPath(tabela);
+                randItems(tabela, bombs, boxes, hospitals);
+                przebieg(tabela, lives);
+                return;
+            case 1:
+                system("CLS");
+                break;
+            case 2:
+                mainOptions(size);
+                break;
+            case 3:
+                system("CLS");
+                break;
+            }
+        }
+
+    }
+}
 int main()
 {
     int tabela[40][20] = { 0 };
-    textSize(30);
-    randPath(tabela);
-    randItems(tabela, 80, 10, 3);
-    przebieg(tabela, 3);
+    textSize(20);
+    startMenu(tabela);
 }
