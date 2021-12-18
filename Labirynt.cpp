@@ -27,7 +27,7 @@ void prettyShow(int tablica[20][20], int x, int y) {
             }
             else {
                 if (tablica[j][i] == 2) {
-                    kolory(4);
+                    kolory(100);
                     cout << char(15);
                 }
                 if (tablica[j][i] == 1) {
@@ -35,7 +35,7 @@ void prettyShow(int tablica[20][20], int x, int y) {
                     cout << char(176);
                 }
                 if (tablica[j][i] == 0) {
-                    kolory(15);
+                    kolory(102);
                     cout << char(219);
                 }
 
