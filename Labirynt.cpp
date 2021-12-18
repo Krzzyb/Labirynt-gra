@@ -28,7 +28,17 @@ void pokaz(int tablica[40][20]) {
         cout << endl;
     }
 }
-
+void legenda(string typ){
+    if(typ == "gra"){
+        cout << "Kontrola strzalkami:" << char(16) << char(17) << char(30) << char(31) << endl;
+        cout << char(3) << " - To sa twoje zycia\n";
+        cout << char(15) << " - To sa miny, unikaj ich, jesli na nie wejdziesz, stracisz jedno "<< char(3) << endl;
+        cout << char(14) << " - To sa niespodzianki, jesli na nie wejdziesz, mozesz dostac cos przydatnego\n";
+        cout << char(127) << " - To jest szpital, jesli do niego wejdziesz, zostaniesz uleczony\n";
+        cout << "Kliknij esc, aby zobaczyc menu\n";
+        
+    }
+}
 void prettyShow(int tablica[40][20], int x, int y) {
 
     for (int i = 0; i < 20; i++) {
@@ -63,7 +73,8 @@ void prettyShow(int tablica[40][20], int x, int y) {
         }
         cout << endl;
     }
-    kolory(0);
+    kolory(7);
+    legenda("gra");
 }
 
 
@@ -103,26 +114,26 @@ void randItems(int tabela[40][20], int bombs, int boxes, int hospitals) {
     srand(time(NULL));
     int X = 0, Y = 0;
 
-    for (int i = 0; i <= bombs; i++) {
+    for (int i = 0; i < bombs; i++) {
         X = rand() % 40;
         Y = rand() % 20;
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 2;
-        }
+        }else i--;
     }
-    for (int i = 0; i<=boxes; i++){
+    for (int i = 0; i < boxes; i++){
         X = rand() % 40;
         Y = rand() % 20;
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 3;
-        }
+        }else i--;
     }
-    for (int i = 0; i<=hospitals; i++){
+    for (int i = 0; i < hospitals; i++){
         X = rand() % 40;
         Y = rand() % 20;
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 4;
-        }
+        }else i--;
     }
 }
 void livescounter(int lives){
@@ -140,13 +151,13 @@ void menu(int tabela [40][20], int x, int y, int lives){
     while (true){
         system("CLS");
         cout << "____MENU____\n";
-        if (n == 0) cout << " " << char(16) << " ";
+        if (n == 0) cout << " " << char(175) << " ";
         cout << "Kontynuuj\n";
-        if (n == 1) cout << " " << char(16) << " ";
+        if (n == 1) cout << " " << char(175) << " ";
         cout << "Zapisz gre\n";
-        if (n == 2) cout << " " << char(16) << " ";
+        if (n == 2) cout << " " << char(175) << " ";
         cout << "Zaladuj gre\n";
-        if (n == 3) cout << " " << char(16) << " ";
+        if (n == 3) cout << " " << char(175) << " ";
         cout << "Wyjdz z gry\n";
         int i = getch();
         if(i == 0 || i == 224){
@@ -227,14 +238,30 @@ void startMenu(int tabela [40][20] = {0}){
     while (true){
         system("CLS");
         cout << "____main MENU____\n";
-        if (n == 0) cout << " " << char(16) << " ";
+        if (n == 0){ 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
         cout << "Nowa gra\n";
-        if (n == 1) cout << " " << char(16) << " ";
+        kolory(7);
+        if (n == 1){
+            kolory(1); 
+            cout << " " << char(175) << " ";
+            }
         cout << "Zaladuj gre\n";
-        if (n == 2) cout << " " << char(16) << " ";
+        kolory(7);
+        if (n == 2){ 
+            kolory(1);
+            cout << " " << char(175) << " ";
+        }
         cout << "Opcje\n";
-        if (n == 3) cout << " " << char(16) << " ";
+        kolory(7);
+        if (n == 3){
+            kolory(1);
+            cout << " " << char(175) << " ";
+        }
         cout << "Wyjdz z gry\n";
+        kolory(7);
         int i = getch();
         if(i == 0 || i == 224){
             i = getch();
