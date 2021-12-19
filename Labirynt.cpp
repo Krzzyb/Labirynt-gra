@@ -5,6 +5,8 @@
 #include <windows.h>
 #include <cwchar>
 #include <stdlib.h>
+#include <array>
+#include <algorithm>
 using namespace std;
 void kolory(int k) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -224,7 +226,13 @@ void livescounter(int lives){
         cout<<char(3);
     }
 }
-
+void resetArray(int tabela[40][20] = {0}){
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 40; j++) {
+            tabela[j][i] = 0;
+        }
+    }
+}
 int menu(int tabela [40][20], int x, int y, int lives){
     system("CLS");
     kolory(7);
@@ -433,10 +441,10 @@ void startMenu(int tabela [40][20] = {0}){
                 randPath(tabela);
                 newGameOptions(bombs, boxes, hospitals, lives);
                 system("CLS");
-                randItems(tabela, bombs, boxes, hospitals);
+                randItems(tabela = {0}, bombs, boxes, hospitals);
                 przebieg(tabela, lives);
-                tabela [40][20] = {0};
-                break;
+                //fill(tabela.begin(), tabela.end(),0);
+                break; 
             case 1:
                 system("CLS");
                 break;
