@@ -160,7 +160,8 @@ void newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives){
                 return;
             case 3:
                 do{
-                    cout << "___Nowa gra___\n" << "wybierz opcje:\n";
+                    system("CLS");
+                    cout << "___Nowa gra___\n" << "Wpisz wartosci:\n";
                     cout << "Pamietaj, ze ich suma nie moze przekroczyc: 740\n";
                 
                     cout << "Ile bomb?  -  ";
@@ -223,7 +224,6 @@ void livescounter(int lives){
         cout<<char(3);
     }
 }
-
 
 void menu(int tabela [40][20], int x, int y, int lives){
     system("CLS");
@@ -326,11 +326,62 @@ void przebieg(int tabela[40][20], int lives){
         }
     }
 }
-void mainOptions(int &size){
-    cout << "___ main Options ___\n";
-    cout << "Wielkosc tekstu: - \n";
-    cin >> size;
-    textSize(size);
+void mainOptions(int size){
+    kolory(7);
+    int n = 0;
+    while (true){
+        system("CLS");
+        cout << "____Opcje wielkosci obrazu____\n";
+        if (n == 0) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Male(10)\n";
+        kolory(7);
+        if (n == 1) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Srednie(20)\n";
+        kolory(7);
+        if (n == 2) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Duze(30)\n";
+        kolory(7);
+        if (n == 3) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Custom\n";
+        kolory(7);
+        int i = getch();
+        if(i == 0 || i == 224){
+            i = getch();
+            if (i == 72 && n > 0) n--;
+            else if (i == 80 && n < 3) n++;
+        }
+        if(i == 13){
+            switch (n){
+            case 0:
+                textSize(15);
+                return;
+            case 1:
+                textSize(20);
+                return;
+            case 2:
+                textSize(30);
+                return;
+            case 3:
+                cout << "Wpisz wielkosc obrazu:\n";
+                cin >> size;
+                textSize(size);
+                return;
+            }
+        }
+
+    }
 }
 void startMenu(int tabela [40][20] = {0}){
     kolory(7);
