@@ -90,12 +90,10 @@ void randPath(int tabela[40][20]) {
         I = rand() % 2;
         if (I == 0 && X + 1 != 40) {
             X++;
-            
             tabela[X][Y] = 1;
         }
         if (I == 1 && Y + 1 != 20) {
             Y++;
-            
             tabela[X][Y] = 1;
         }
     }
@@ -194,7 +192,7 @@ void randItems(int tabela[40][20], int bombs, int boxes, int hospitals) {
         cout << "Losowanie bomb...\n";
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 2;
-            cout << "Znaleziono miejsce:" << X << ", " << Y << endl; 
+            cout << "Znaleziono miejsce:" << endl; 
         }else i--;
     }
     for (int i = 0; i < boxes; i++){
@@ -203,7 +201,7 @@ void randItems(int tabela[40][20], int bombs, int boxes, int hospitals) {
         cout << "Losowanie niespodzianek...\n";
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 3;
-            cout << "Znaleziono miejsce:" << X << ", " << Y << endl; 
+            cout << "Znaleziono miejsce:" << endl; 
         }else i--;
     }
     for (int i = 0; i < hospitals; i++){
@@ -212,7 +210,7 @@ void randItems(int tabela[40][20], int bombs, int boxes, int hospitals) {
         cout << "Losowanie szpitali...\n";
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 4;
-            cout << "Znaleziono miejsce:" << X << ", " << Y << endl; 
+            cout << "Znaleziono miejsce:" << endl; 
         }else i--;
     }
     system("pause");
