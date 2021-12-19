@@ -99,7 +99,9 @@ void randPath(int tabela[40][20]) {
     }
 }
 void newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives){
-    
+    bombs = 0;
+    boxes = 0;
+    hospitals = 0;
     system("CLS");
     kolory(7);
     int n = 0;
@@ -223,7 +225,7 @@ void livescounter(int lives){
     }
 }
 
-void menu(int tabela [40][20], int x, int y, int lives){
+int menu(int tabela [40][20], int x, int y, int lives){
     system("CLS");
     kolory(7);
     int n = 0;
@@ -252,7 +254,7 @@ void menu(int tabela [40][20], int x, int y, int lives){
             kolory(1);
             cout << " " << char(175) << " ";
             }
-        cout << "Wyjdz z gry\n";
+        cout << "Wyjdz do main Menu\n";
         kolory(7);
         int i = getch();
         if(i == 0 || i == 224){
@@ -267,7 +269,7 @@ void menu(int tabela [40][20], int x, int y, int lives){
                 livescounter(lives);
                 cout << endl;
                 prettyShow(tabela,x,y);
-                return;
+                return 1;
             case 1:
                 system("CLS");
                 break;
@@ -275,11 +277,12 @@ void menu(int tabela [40][20], int x, int y, int lives){
                 system("CLS");
                 break;
             case 3:
-                exit(0);
+                return 0;
             }
         }
 
     }
+    
     
 }
 void przebieg(int tabela[40][20], int lives){
@@ -291,7 +294,12 @@ void przebieg(int tabela[40][20], int lives){
      while (lives>0) {
         int rozmiary = 20, rozmiarx = 40;
         int i = getch();
-        if (i == 27) menu(tabela, x, y, lives);
+        if (i == 27){
+            int wynikMenu = menu(tabela, x, y, lives);
+            if(wynikMenu == 0){
+                return;
+            }
+        } 
         if (i == 0 || i == 224){
             i = getch();
             if (i == 72) y--;
@@ -427,7 +435,8 @@ void startMenu(int tabela [40][20] = {0}){
                 system("CLS");
                 randItems(tabela, bombs, boxes, hospitals);
                 przebieg(tabela, lives);
-                return;
+                tabela [40][20] = {0};
+                break;
             case 1:
                 system("CLS");
                 break;
