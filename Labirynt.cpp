@@ -82,9 +82,7 @@ void prettyShow(int tablica[40][20], int x, int y) {
     legenda("gra");
 }
 
-
-
-void randPath(int tabela[40][20] = {0}) {
+void randPath(int tabela[40][20]) {
     srand(time(NULL));
     int I, X = 0, Y = 0;
     tabela[X][Y] = 1;
@@ -92,28 +90,98 @@ void randPath(int tabela[40][20] = {0}) {
         I = rand() % 2;
         if (I == 0 && X + 1 != 40) {
             X++;
+            
             tabela[X][Y] = 1;
         }
         if (I == 1 && Y + 1 != 20) {
             Y++;
+            
             tabela[X][Y] = 1;
         }
     }
 }
 void newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives){
+    
     system("CLS");
-    cout << "___Nowa gra___\n" << "wybierz opcje:\n";
-    cout << "Ile bomb?  -  ";
-    cin >> bombs;
-    cout << endl;
-    cout << "Ile niespodzianek?  -  ";
-    cin >> boxes;
-    cout << endl;
-    cout << "Ile szpitali?  -  ";
-    cin >> hospitals; 
-    cout << endl;
-    cout << "Ile zyc?  -  ";
-    cin >> lives;
+    kolory(7);
+    int n = 0;
+    while (true){
+        system("CLS");
+        cout << "Wybierz poziom:\n";
+        if (n == 0) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Easy\n";
+        kolory(7);
+        if (n == 1) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Medium\n";
+        kolory(7);
+        if (n == 2) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Hard\n";
+        kolory(7);
+        if (n == 3) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Custom\n";
+        kolory(7);
+        int i = getch();
+        if(i == 0 || i == 224){
+            i = getch();
+            if (i == 72 && n > 0) n--;
+            else if (i == 80 && n < 3) n++;
+        }
+        if(i == 13){
+            switch (n){
+            case 0:
+                bombs = 50;
+                boxes = 30;
+                hospitals = 15;
+                lives = 8;
+                return;
+            case 1:
+                bombs = 80;
+                boxes = 20;
+                hospitals = 8;
+                lives = 5;
+                return;
+            case 2:
+                bombs = 150;
+                boxes = 10;
+                hospitals = 3;
+                lives = 3;
+                return;
+            case 3:
+                do{
+                    cout << "___Nowa gra___\n" << "wybierz opcje:\n";
+                    cout << "Pamietaj, ze ich suma nie moze przekroczyc: 740\n";
+                
+                    cout << "Ile bomb?  -  ";
+                    cin >> bombs;
+                    cout << endl;
+                    cout << "Ile niespodzianek?  -  ";
+                    cin >> boxes;
+                    cout << endl;
+                    cout << "Ile szpitali?  -  ";
+                    cin >> hospitals; 
+                    cout << endl;
+                    system("CLS");
+                }while(740 < bombs + boxes + hospitals);
+                cout << "Ile zyc?  -  ";
+                cin >> lives;
+                return;
+            }
+        }
+
+    }
+    
 }
 void randItems(int tabela[40][20], int bombs, int boxes, int hospitals) {
     srand(time(NULL));
@@ -122,24 +190,32 @@ void randItems(int tabela[40][20], int bombs, int boxes, int hospitals) {
     for (int i = 0; i < bombs; i++) {
         X = rand() % 40;
         Y = rand() % 20;
+        cout << "Losowanie bomb...\n";
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 2;
+            cout << "Znaleziono miejsce:" << X << ", " << Y << endl; 
         }else i--;
     }
     for (int i = 0; i < boxes; i++){
         X = rand() % 40;
         Y = rand() % 20;
+        cout << "Losowanie niespodzianek...\n";
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 3;
+            cout << "Znaleziono miejsce:" << X << ", " << Y << endl; 
         }else i--;
     }
     for (int i = 0; i < hospitals; i++){
         X = rand() % 40;
         Y = rand() % 20;
+        cout << "Losowanie szpitali...\n";
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 4;
+            cout << "Znaleziono miejsce:" << X << ", " << Y << endl; 
         }else i--;
     }
+    system("pause");
+    system("CLS");
 }
 void livescounter(int lives){
     for(int i=0; i<lives; i++){
@@ -296,9 +372,10 @@ void startMenu(int tabela [40][20] = {0}){
         if(i == 13){
             switch (n){
             case 0:
+                
+                randPath(tabela);
                 newGameOptions(bombs, boxes, hospitals, lives);
                 system("CLS");
-                randPath(tabela);
                 randItems(tabela, bombs, boxes, hospitals);
                 przebieg(tabela, lives);
                 return;
