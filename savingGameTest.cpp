@@ -33,7 +33,7 @@ void listFiles(const char* dirname) {
 
 int main()
 {
-    string nazwa = "C:\\Users\\zybur\\OneDrive\\Pulpit\\Pulpit\\Projekty\\Kod\\Visual Studio\\Szkolne\\Labirynt gra\\saves\\";
+    /*string nazwa = "C:\\Users\\zybur\\OneDrive\\Pulpit\\Pulpit\\Projekty\\Kod\\Visual Studio\\Szkolne\\Labirynt gra\\saves\\";
     string tmp = "";
     cin >> tmp;
     tmp = nazwa + tmp + ".txt";
@@ -44,7 +44,11 @@ int main()
     {
         plik << i << " ";
     }
-    plik.close();
+    plik.close();*/
+
+    //ofstream zapis("Zapis_gry_nowy.txt");
+    //zapis << "lives: " << "5\n";
+    //zapis.close();
 
     /*fstream plik;
     plik.open("C:\\Intel\\test.txt", ios::in);
@@ -61,8 +65,16 @@ int main()
     plik.close();
     system("pause");*/
 
-    listFiles("saves");
+    //listFiles(".");
     
+    string tekst;
+
+    ifstream file("Zapis_gry_nowy.txt");
+
+    while(getline(file, tekst)){
+        cout << tekst << endl;
+    }
+    file.close();
     system("pause");
 return 0;
 }

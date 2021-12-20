@@ -9,10 +9,7 @@
 
 
 using namespace std;
-int arrayToVector(int tablica[40][20]){
-    vector<vector<int>> vtablica(begin(tablica), end(tablica));
-    return vtablica;
-}
+
 void kolory(int k) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, k);
@@ -88,17 +85,17 @@ void prettyShow(int tablica[40][20], int x, int y) {
     kolory(7);
     legenda("gra");
 }
-void loadGame(int &tablica[40][20], int &x, int &y, int &lives){
+void loadGame(int tablica[40][20], int &x, int &y, int &lives){
     fstream plik;
-    plik.open("C:\\Intel\\Labirynt_gra\\zapis_gry", ios::in);
+    plik.open("C:\\Intel\\Labirynt_gra\\zapis_gry.txt", ios::in);
     int numerek = 0;
     if(plik.is_open()){
         for(int i = 0; i<8; i++){
-          plik >> numerek  
+          plik >> numerek;
         }
         plik >> lives;
         for(int i = 0; i<21; i++){
-          plik >> numerek  
+          plik >> numerek;  
         }
         plik >> x;
         plik >> numerek;
