@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <array>
 #include <algorithm>
+
 using namespace std;
 void kolory(int k) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -246,29 +247,34 @@ int menu(int tabela [40][20], int x, int y, int lives){
             }
         cout << "Kontynuuj\n";
         kolory(7);
-        if (n == 1) { 
+        if (n == 1){ 
             kolory(1);
             cout << " " << char(175) << " ";
-            }
+        }
         cout << "Zapisz gre\n";
         kolory(7);
-        if (n == 2) { 
+        if (n == 2){ 
             kolory(1);
             cout << " " << char(175) << " ";
-            }
+        }
         cout << "Zaladuj gre\n";
         kolory(7);
-        if (n == 3) { 
+        if (n == 3){ 
             kolory(1);
             cout << " " << char(175) << " ";
-            }
+        }
         cout << "Wyjdz do main Menu\n";
         kolory(7);
+        if (n == 4){
+            kolory(1);
+            cout << " " << char(175) << " ";
+        }
+        cout << "Wyjdz z gry\n";
         int i = getch();
         if(i == 0 || i == 224){
             i = getch();
             if (i == 72 && n > 0) n--;
-            else if (i == 80 && n < 3) n++;
+            else if (i == 80 && n < 4) n++;
         }
         if(i == 13){
             switch (n){
@@ -286,6 +292,9 @@ int menu(int tabela [40][20], int x, int y, int lives){
                 break;
             case 3:
                 return 0;
+            
+            case 4:
+                exit(0);
             }
         }
 
@@ -443,10 +452,7 @@ void startMenu(int tabela [40][20] = {0}){
                 system("CLS");
                 randItems(tabela, bombs, boxes, hospitals);
                 przebieg(tabela, lives);
-                pokaz(tabela);
                 resetArray(tabela);
-                pokaz(tabela);
-                system("pause");
                 break; 
             case 1:
                 system("CLS");
