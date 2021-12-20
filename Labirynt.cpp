@@ -1,5 +1,5 @@
-#include <time.h>
 #include <iostream>
+#include <time.h>
 #include <cstdlib>
 #include <conio.h>
 #include <windows.h>
@@ -441,9 +441,12 @@ void startMenu(int tabela [40][20] = {0}){
                 randPath(tabela);
                 newGameOptions(bombs, boxes, hospitals, lives);
                 system("CLS");
-                randItems(tabela = {0}, bombs, boxes, hospitals);
+                randItems(tabela, bombs, boxes, hospitals);
                 przebieg(tabela, lives);
-                //fill(tabela.begin(), tabela.end(),0);
+                pokaz(tabela);
+                resetArray(tabela);
+                pokaz(tabela);
+                system("pause");
                 break; 
             case 1:
                 system("CLS");
