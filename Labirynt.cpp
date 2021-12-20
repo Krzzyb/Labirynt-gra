@@ -3,10 +3,10 @@
 #include <cstdlib>
 #include <conio.h>
 #include <windows.h>
-#include <cwchar>
 #include <stdlib.h>
-#include <array>
-#include <algorithm>
+#include <fstream>
+
+
 
 using namespace std;
 void kolory(int k) {
@@ -85,6 +85,23 @@ void prettyShow(int tablica[40][20], int x, int y) {
     legenda("gra");
 }
 
+void saveGame (int tablica[40][20], int x, int y, int lives){
+    string nazwa = "C:\\Intel\\Labirynt_gra\\";
+    string tmp = "zapis_gry";
+    //cin >> tmp; moze gdzies w przyszlosci zostanie dodane menu roznych zapisow gry
+    tmp = nazwa + tmp + ".txt";
+    fstream plik;
+    plik.open(tmp.c_str(), ios::out);
+    plik << "lives: " << lives << endl;
+    plik << "player coordinates: " << x << " " << y << endl;
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 40; j++) {
+            plik << tablica[j][i] << " ";
+        }
+        plik << endl;
+    }
+    plik.close();
+}
 void randPath(int tabela[40][20]) {
     srand(time(NULL));
     int I, X = 0, Y = 0;
@@ -286,6 +303,8 @@ int menu(int tabela [40][20], int x, int y, int lives){
                 return 1;
             case 1:
                 system("CLS");
+                saveGame(tabela, x, y, lives);
+                cout << "Zapisano";
                 break;
             case 2:
                 system("CLS");
@@ -406,6 +425,8 @@ void mainOptions(int size){
 
     }
 }
+
+
 void startMenu(int tabela [40][20] = {0}){
     kolory(7);
     int n = 0;
@@ -467,6 +488,8 @@ void startMenu(int tabela [40][20] = {0}){
 
     }
 }
+
+
 int main()
 {
     int tabela[40][20] = { 0 };
