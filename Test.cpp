@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <conio.h>
 #include <cwchar>
+#include <vector>
 using namespace std;
 
 void kolor(int k){
@@ -20,6 +21,10 @@ void size(int size){
     wcscpy(cfi.FaceName, L"Consolas"); // Choose your font
     SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 }
+int arrayToVector(int tablica[40][20]){
+    vector<vector<int>> vtablica(begin(tablica), end(tablica));
+    return vtablica;
+}
 int main(){
     for (int i = 0; i<256; i++){
         kolor(i);
@@ -35,5 +40,16 @@ int main(){
     }
     size(30);
     cout << "Font: Consolas, Size: 24\n";
+
+    int array[40][20] = {0};
+    int vtablica = arrayToVector(array);
+    for (int i = 0; i < vtablica.size(); i++)
+    {
+        for (int j = 0; j < vtablica[i].size(); j++)
+        {
+            cout << vtablica[i][j] << " ";
+        }   
+        cout << endl;
+    }
     return 0;
 }

@@ -5,10 +5,14 @@
 #include <windows.h>
 #include <stdlib.h>
 #include <fstream>
-
+#include <vector>
 
 
 using namespace std;
+int arrayToVector(int tablica[40][20]){
+    vector<vector<int>> vtablica(begin(tablica), end(tablica));
+    return vtablica;
+}
 void kolory(int k) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, k);
@@ -84,7 +88,33 @@ void prettyShow(int tablica[40][20], int x, int y) {
     kolory(7);
     legenda("gra");
 }
-
+void loadGame(int &tablica[40][20], int &x, int &y, int &lives){
+    fstream plik;
+    plik.open("C:\\Intel\\Labirynt_gra\\zapis_gry", ios::in);
+    int numerek = 0;
+    if(plik.is_open()){
+        for(int i = 0; i<8; i++){
+          plik >> numerek  
+        }
+        plik >> lives;
+        for(int i = 0; i<21; i++){
+          plik >> numerek  
+        }
+        plik >> x;
+        plik >> numerek;
+        plik >> y;
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 40; j++) {
+                plik >> numerek;
+                tablica[40][20] = numerek;
+            }
+        }
+    }else{
+        cout << "Nie otwarto pliku" << endl;
+    }
+    plik.close();
+    system("pause");
+}
 void saveGame (int tablica[40][20], int x, int y, int lives){
     string nazwa = "C:\\Intel\\Labirynt_gra\\";
     string tmp = "zapis_gry";
@@ -321,8 +351,9 @@ int menu(int tabela [40][20], int x, int y, int lives){
     
     
 }
-void przebieg(int tabela[40][20], int lives){
-    int x = 0, y = 0;
+void przebieg(int tabela[40][20], int lives, int x, int y){
+    x = 0;
+    y = 0;
     int setlives = lives;
     livescounter(lives);
     cout << endl;
@@ -429,7 +460,7 @@ void mainOptions(int size){
 
 void startMenu(int tabela [40][20] = {0}){
     kolory(7);
-    int n = 0;
+    int n = 0, x = 0, y = 0;
     int bombs, boxes, hospitals, lives, size;
     while (true){
         system("CLS");
@@ -472,11 +503,13 @@ void startMenu(int tabela [40][20] = {0}){
                 newGameOptions(bombs, boxes, hospitals, lives);
                 system("CLS");
                 randItems(tabela, bombs, boxes, hospitals);
-                przebieg(tabela, lives);
+                przebieg(tabela, lives, x, y);
                 resetArray(tabela);
                 break; 
             case 1:
                 system("CLS");
+                loadGame(tabela, x, y, lives);
+                przebieg(tabela, lives, x, y);
                 break;
             case 2:
                 mainOptions(size);
