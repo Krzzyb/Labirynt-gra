@@ -87,29 +87,34 @@ void prettyShow(int tablica[40][20], int x, int y) {
 }
 void loadGame(int tablica[40][20], int &x, int &y, int &lives){
     fstream plik;
+    string linijka;
     plik.open("C:\\Intel\\Labirynt_gra\\zapis_gry.txt", ios::in);
-    int numerek = 0;
     if(plik.is_open()){
-        for(int i = 0; i<8; i++){
-          plik >> numerek;
-        }
-        plik >> lives;
-        for(int i = 0; i<21; i++){
-          plik >> numerek;  
-        }
-        plik >> x;
-        plik >> numerek;
-        plik >> y;
+        getline(plik, linijka);
+        getline(plik, linijka);
+        lives = stoi(linijka);
+        getline(plik, linijka);
+        getline(plik, linijka);
+        x = stoi(linijka);
+        getline(plik, linijka);
+        y = stoi(linijka);
         for (int i = 0; i < 20; i++) {
+            getline(plik, linijka);
             for (int j = 0; j < 40; j++) {
-                plik >> numerek;
-                tablica[40][20] = numerek;
+                tablica[j][i] = linijka[j] - 48;
             }
         }
     }else{
         cout << "Nie otwarto pliku" << endl;
     }
     plik.close();
+    cout << lives << " " << x << " " << y << endl;
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 40; j++) {
+            cout << " " << tablica[j][i];
+        }
+        cout << endl;
+    }
     system("pause");
 }
 void saveGame (int tablica[40][20], int x, int y, int lives){
@@ -119,11 +124,11 @@ void saveGame (int tablica[40][20], int x, int y, int lives){
     tmp = nazwa + tmp + ".txt";
     fstream plik;
     plik.open(tmp.c_str(), ios::out);
-    plik << "lives: " << lives << endl;
-    plik << "player coordinates: " << x << " " << y << endl;
+    plik << "lives: \n" << lives << endl;
+    plik << "player coordinates: \n" << x << endl << y << endl;
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 40; j++) {
-            plik << tablica[j][i] << " ";
+            plik << tablica[j][i];
         }
         plik << endl;
     }
@@ -301,24 +306,20 @@ int menu(int tabela [40][20], int x, int y, int lives){
             kolory(1);
             cout << " " << char(175) << " ";
         }
-        cout << "Zaladuj gre\n";
+        cout << "Wyjdz do main Menu\n";
         kolory(7);
         if (n == 3){ 
             kolory(1);
             cout << " " << char(175) << " ";
         }
-        cout << "Wyjdz do main Menu\n";
-        kolory(7);
-        if (n == 4){
-            kolory(1);
-            cout << " " << char(175) << " ";
-        }
         cout << "Wyjdz z gry\n";
+        
+        
         int i = getch();
         if(i == 0 || i == 224){
             i = getch();
             if (i == 72 && n > 0) n--;
-            else if (i == 80 && n < 4) n++;
+            else if (i == 80 && n < 3) n++;
         }
         if(i == 13){
             switch (n){
@@ -334,12 +335,8 @@ int menu(int tabela [40][20], int x, int y, int lives){
                 cout << "Zapisano";
                 break;
             case 2:
-                system("CLS");
-                break;
-            case 3:
                 return 0;
-            
-            case 4:
+            case 3:
                 exit(0);
             }
         }
@@ -349,8 +346,6 @@ int menu(int tabela [40][20], int x, int y, int lives){
     
 }
 void przebieg(int tabela[40][20], int lives, int x, int y){
-    x = 0;
-    y = 0;
     int setlives = lives;
     livescounter(lives);
     cout << endl;

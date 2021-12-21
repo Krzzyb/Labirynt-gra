@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream> // file stream
-#include <string.h>
+#include <string>
 #include <dirent.h>
 #include <stdio.h>
 using namespace std;
@@ -30,7 +30,38 @@ void listFiles(const char* dirname) {
 
     closedir(dir);
 }
-
+void loadGame(int tablica[40][20], int &x, int &y, int &lives){
+    fstream plik;
+    string linijka;
+    plik.open("C:\\Intel\\Labirynt_gra\\zapis_gry.txt", ios::in);
+    if(plik.is_open()){
+        getline(plik, linijka);
+        getline(plik, linijka);
+        lives = stoi(linijka);
+        getline(plik, linijka);
+        getline(plik, linijka);
+        x = stoi(linijka);
+        getline(plik, linijka);
+        y = stoi(linijka);
+        for (int i = 0; i < 20; i++) {
+            getline(plik, linijka);
+            for (int j = 0; j < 40; j++) {
+                tablica[j][i] = linijka[j] - 48;
+            }
+        }
+    }else{
+        cout << "Nie otwarto pliku" << endl;
+    }
+    plik.close();
+    cout << lives << " " << x << " " << y << endl;
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 40; j++) {
+            cout << " " << tablica[j][i];
+        }
+        cout << endl;
+    }
+    system("pause");
+}
 int main()
 {
     /*string nazwa = "C:\\Users\\zybur\\OneDrive\\Pulpit\\Pulpit\\Projekty\\Kod\\Visual Studio\\Szkolne\\Labirynt gra\\saves\\";
@@ -63,7 +94,7 @@ int main()
         cout << "NIe otwarto poliku" << endl;
     }
     plik.close();
-    system("pause");*/
+    system("pause");
 
     //listFiles(".");
     
@@ -75,6 +106,9 @@ int main()
         cout << tekst << endl;
     }
     file.close();
-    system("pause");
+    system("pause");*/
+    int tabela[40][20] = {0};
+    int x = 1, y = 1, lives = 0;
+    loadGame(tabela, x, y, lives);
 return 0;
 }
