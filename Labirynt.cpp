@@ -313,7 +313,7 @@ int menu(int tabela [40][20], int x, int y, int lives){
             cout << " " << char(175) << " ";
         }
         cout << "Wyjdz z gry\n";
-        
+        kolory(7);
         
         int i = getch();
         if(i == 0 || i == 224){
@@ -448,7 +448,6 @@ void mainOptions(int size){
 
     }
 }
-
 
 void startMenu(int tabela [40][20] = {0}){
     kolory(7);
