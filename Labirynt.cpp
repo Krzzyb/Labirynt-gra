@@ -85,6 +85,78 @@ void prettyShow(int tablica[40][20], int x, int y) {
     kolory(7);
     legenda("gra");
 }
+void darkShow(int tablica[40][20], int x, int y, string wyposazenie){
+    if(wyposazenie == "nic"){
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 40; j++) {
+                if(y == i && x == j){
+                    kolory(1);
+                    cout << char(1);
+                }else{
+                    if (tablica[j][i] == 4){
+                        kolory(108);
+                        cout << char(127);
+                    }
+                    if(tablica[j][i] == 3){
+                        kolory(109);
+                        cout << char(14);
+                    }
+                    if(tablica[j][i] == 0 || tablica[j][i] == 1 || tablica[j][i] == 2){
+                        kolory(108);
+                        cout << " ";
+                    }
+                    if(tablica[j][i] == 5){
+                        kolory(128);
+                        cout << char(158);
+                    }
+                }
+                
+            }
+            cout << endl;
+        }
+    }
+    if(wyposazenie == "wykrywacz"){
+        if(tablica[y][x--] == 2){tablica[y][x--] = 6;}
+        if(tablica[y--][x] == 2){tablica[y--][x]= 6;}
+        if(tablica[y++][x] == 2){tablica[y++][x] = 6;}
+        if(tablica[y][x++] == 2){tablica[y][x++] = 6;}
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 40; j++) {
+                if(y == i && x == j){
+                    kolory(1);
+                    cout << char(1);
+                }else{
+                    if (tablica[j][i] == 4){
+                        kolory(108);
+                        cout << char(127);
+                    }
+                    if(tablica[j][i] == 3){
+                        kolory(109);
+                        cout << char(14);
+                    }
+                    if(tablica[j][i] == 0 || tablica[j][i] == 1 || tablica[j][i] == 2){
+                        kolory(108);
+                        cout << " ";
+                    }
+                    if(tablica[j][i] == 5){
+                        kolory(128);
+                        cout << char(158);
+                    }
+                    if(tablica[j][i] == 6){
+                        kolory(100);
+                        cout << char(15);
+                    }
+                }
+                
+            }
+            cout << endl;
+        }
+
+    }
+    kolory(7);
+    legenda("gra");
+}
+
 void loadGame(int tablica[40][20], int &x, int &y, int &lives){
     fstream plik;
     string linijka;
@@ -327,7 +399,7 @@ int menu(int tabela [40][20], int x, int y, int lives){
                 system("CLS");
                 livescounter(lives);
                 cout << endl;
-                prettyShow(tabela,x,y);
+                darkShow(tabela,x,y,"nic");
                 return 1;
             case 1:
                 system("CLS");
@@ -349,7 +421,7 @@ void przebieg(int tabela[40][20], int lives, int x, int y){
     int setlives = lives;
     livescounter(lives);
     cout << endl;
-    prettyShow(tabela,x,y);
+    darkShow(tabela,x,y,"wykrywacz");
      while (lives>0) {
         int rozmiary = 20, rozmiarx = 40;
         int i = getch();
@@ -387,7 +459,7 @@ void przebieg(int tabela[40][20], int lives, int x, int y){
             }
             livescounter(lives);
             cout<<endl;
-            prettyShow(tabela,x,y);
+            darkShow(tabela,x,y,"wykrywacz");
         }
     }
 }
