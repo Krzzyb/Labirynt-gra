@@ -6,8 +6,6 @@
 #include <stdlib.h>
 #include <fstream>
 
-
-
 using namespace std;
 
 void kolory(int k) {
@@ -305,7 +303,41 @@ void randEquip(string &wyposazenie, int luckFactor){
         }
     }
 }
-
+void saveSettings(int size, bool pasekLadowania){
+    string pasekLadowaniaString;
+    if (pasekLadowania == true){
+        pasekLadowaniaString = "true";
+    } 
+    if (pasekLadowania == false){
+        pasekLadowaniaString = "false";
+    }
+    fstream plik;
+    plik.open("C:\\Intel\\Labirynt_gra\\settings.txt", ios::out);
+    plik << "text size: \n" << size << endl;
+    plik << "pasek ladowania: \n" << pasekLadowaniaString << endl;
+    plik.close();
+}
+void loadSettings(int &size, bool &pasekLadowania){
+    fstream plik;
+    string linijka;
+    plik.open("C:\\Intel\\Labirynt_gra\\settings.txt", ios::in);
+    if(plik.is_open()){
+        getline(plik, linijka);
+        getline(plik, linijka);
+        size = stoi(linijka);
+        getline(plik, linijka);
+        getline(plik, linijka);
+        if(linijka == "true"){
+            pasekLadowania = true;
+        }
+        if(linijka == "false"){
+            pasekLadowania = false;
+        }
+    }else{
+        cout << "Nie otwarto pliku" << endl;
+    }
+    plik.close();
+}
 void loadGame(int tablica[40][20], int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
     fstream plik;
     string linijka;
@@ -486,7 +518,7 @@ void randItems(int tabela[40][20], int bombs, int boxes, int hospitals, bool pas
         if(pasekLadowania == true){ 
             cout << "|";
             for(int n = 0; n < 50 * i / bombs; n++ ){
-                cout << "#";
+                cout << char(178);
             }
             for(int j=0; j < 50 - 50 * i / bombs; j++){
                 cout << " ";
@@ -506,7 +538,7 @@ void randItems(int tabela[40][20], int bombs, int boxes, int hospitals, bool pas
         if(pasekLadowania == true){ 
             cout << "|";
             for(int n = 0; n < 50 * i / boxes; n++ ){
-                cout << "#";
+                cout << char(178);
             }
             for(int j=0; j < 50 - 50 * i / boxes; j++){
                 cout << " ";
@@ -526,7 +558,7 @@ void randItems(int tabela[40][20], int bombs, int boxes, int hospitals, bool pas
         if(pasekLadowania == true){ 
             cout << "|";
             for(int n = 0; n < 50 * i / hospitals; n++ ){
-                cout << "#";
+                cout << char(178);
             }
             for(int j=0; j < 50 - 50 * i / hospitals; j++){
                 cout << " ";
@@ -664,11 +696,19 @@ void przebieg(int tabela[40][20], int lives, int x, int y, int luckFactor, strin
         }
     }
 }
-void mainOptions(int size, bool &pasekLadowania){
+void mainOptions(int &size, bool &pasekLadowania){
     kolory(7);
     int n = 0;
     while (true){
         system("CLS");
+        cout << "Aktualne ustawienia:\n" << "Wielkosc obrazu: " << size << endl;
+        cout << "Pasek ladowania: ";
+        if(pasekLadowania == true){
+            cout << "wlaczony\n";
+        }else{
+            cout << "wylaczony\n";
+        }
+        cout << endl;
         cout << "____Opcje wielkosci obrazu____\n";
         if (n == 0) { 
             kolory(1);
@@ -694,6 +734,7 @@ void mainOptions(int size, bool &pasekLadowania){
             }
         cout << "Custom\n";
         kolory(7);
+        cout << endl;
         cout << "____Opcje graficzne____\n" << "(ekran paska postepu jest dosc zasobozerny)\n";
         if (n == 4) { 
             kolory(1);
@@ -723,25 +764,28 @@ void mainOptions(int size, bool &pasekLadowania){
         if(i == 13){
             switch (n){
             case 0:
+                size = 15;
                 textSize(15);
-                return;
+                break;
             case 1:
+                size = 20;
                 textSize(20);
-                return;
+                break;
             case 2:
+                size = 30;
                 textSize(30);
-                return;
+                break;
             case 3:
                 cout << "Wpisz wielkosc obrazu:\n";
                 cin >> size;
                 textSize(size);
-                return;
+                break;
             case 4:
                 pasekLadowania = true;
-                return;
+                break;
             case 5:
                 pasekLadowania = false;
-                return;
+                break;
             }
         }
     }
@@ -753,6 +797,8 @@ void startMenu(int tabela [40][20] = {0}){
     int bombs, boxes, hospitals, lives, size, luckFactor;
     string wyposazenie;
     bool pasekLadowania = true;
+    loadSettings(size, pasekLadowania);
+    textSize(size);
     while (true){
         system("CLS");
         cout << "____main MENU____\n";
@@ -805,12 +851,12 @@ void startMenu(int tabela [40][20] = {0}){
                 break;
             case 2:
                 mainOptions(size, pasekLadowania);
+                saveSettings(size, pasekLadowania);
                 break;
             case 3:
                 exit(0);
             }
         }
-
     }
 }
 
@@ -818,7 +864,6 @@ void startMenu(int tabela [40][20] = {0}){
 int main()
 {
     int tabela[40][20] = { 0 };
-    textSize(20);
     SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE),CONSOLE_FULLSCREEN_MODE,0);
     startMenu(tabela);
 }
