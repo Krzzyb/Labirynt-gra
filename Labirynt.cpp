@@ -65,8 +65,8 @@ void prettyShow(int tablica[40][20], int x, int y) {
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 40; j++) {
             if (y == i && x == j) {
-                kolory(1);
-                cout << char(1);
+                kolory(98);
+                cout << char(197);
             }
             else {
                 if (tablica[j][i] == 2) {
@@ -103,7 +103,7 @@ void prettyShow(int tablica[40][20], int x, int y) {
         cout << endl;
     }
     kolory(7);
-    legenda("gra");
+    //legenda("gra");
 }
 void darkShow(int tablica[40][20], int x, int y, string wyposazenie){
     if(wyposazenie == "nic"){
@@ -652,7 +652,7 @@ void przebieg(int tabela[40][20], int lives, int x, int y, int luckFactor, strin
     livescounter(lives);
     cout << endl;
     darkShow(tabela,x,y,wyposazenie);
-     while (lives>0) {
+    while (lives>0) {
         int rozmiary = 20, rozmiarx = 40;
         int i = getch();
         if (i == 27){
@@ -695,6 +695,14 @@ void przebieg(int tabela[40][20], int lives, int x, int y, int luckFactor, strin
             darkShow(tabela,x,y,wyposazenie);
         }
     }
+    system("CLS");
+    cout << "Koniec gry, straciles wszystkie swoje zycia\n";
+    cout << endl;
+    cout << "Oto plansza po ktorej sie poruszales:\n";
+    prettyShow(tabela, x,y);
+    cout << endl;
+    cout << "nacisnij ENTER, aby wrocic do main Menu\n";
+    getchar();
 }
 void mainOptions(int &size, bool &pasekLadowania){
     kolory(7);
@@ -859,7 +867,6 @@ void startMenu(int tabela [40][20] = {0}){
         }
     }
 }
-
 
 int main()
 {
