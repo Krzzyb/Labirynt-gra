@@ -474,35 +474,64 @@ void newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luc
 void randItems(int tabela[40][20], int bombs, int boxes, int hospitals) {
     srand(time(NULL));
     int X = 0, Y = 0;
-
+    
     for (int i = 0; i < bombs; i++) {
+    
         X = rand() % 40;
         Y = rand() % 20;
-        cout << "Losowanie bomb...\n";
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 2;
-            cout << "Znaleziono miejsce:" << endl; 
         }else i--;
+        cout << "Losowanie min...\n";
+        cout << "|";
+        for(int n = 0; n < 50 * i / bombs; n++ ){
+            cout << "#";
+        }
+        for(int j=0; j < 50 - 50 * i / bombs; j++){
+            cout << " ";
+        }
+        cout << "|"; 
+        //getchar();
+        system("CLS");
     }
     for (int i = 0; i < boxes; i++){
         X = rand() % 40;
         Y = rand() % 20;
-        cout << "Losowanie niespodzianek...\n";
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 3;
-            cout << "Znaleziono miejsce:" << endl; 
         }else i--;
+        cout << "Losowanie niespodzianek...\n";
+        cout << "|";
+        for(int n = 0; n < 50 * i / boxes; n++ ){
+            cout << "#";
+        }
+        for(int j=0; j < 50 - 50 * i / boxes; j++){
+            cout << " ";
+        }
+        cout << "|"; 
+        //getchar();
+        system("CLS");
     }
     for (int i = 0; i < hospitals; i++){
         X = rand() % 40;
         Y = rand() % 20;
-        cout << "Losowanie szpitali...\n";
         if (tabela[X][Y] == 0) {
             tabela[X][Y] = 4;
-            cout << "Znaleziono miejsce:" << endl; 
         }else i--;
+        cout << "Losowanie szpitali...\n";
+        cout << "|";
+        for(int n = 0; n < 50 * i / hospitals; n++ ){
+            cout << "#";
+        }
+        for(int j=0; j < 50 - 50 * i / hospitals; j++){
+            cout << " ";
+        }
+        cout << "|"; 
+        //getchar();
+        system("CLS");
     }
-    system("pause");
+    cout << "Zakonczono losowanie, nacisnij ENTER, aby rozpoczac gre";
+    getchar();
     system("CLS");
 }
 void livescounter(int lives){
@@ -758,5 +787,6 @@ int main()
 {
     int tabela[40][20] = { 0 };
     textSize(20);
+    SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE),CONSOLE_FULLSCREEN_MODE,0);
     startMenu(tabela);
 }
