@@ -63,7 +63,7 @@ void legenda(string typ){
     }
 }
 void prettyShow(int tablica[40][20], int x, int y) {
-
+// już nieaktualna funkcja
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 40; j++) {
             if (y == i && x == j) {
@@ -112,7 +112,7 @@ void darkShow(int tablica[40][20], int x, int y, string wyposazenie){
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 40; j++) {
                 if(y == i && x == j){
-                    kolory(1);
+                    kolory(97);
                     cout << char(1);
                 }else{
                     if (tablica[j][i] == 4){
@@ -146,7 +146,7 @@ void darkShow(int tablica[40][20], int x, int y, string wyposazenie){
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 40; j++) {
                 if(y == i && x == j){
-                    kolory(1);
+                    kolory(97);
                     cout << char(1);
                     check = true;
                 }
@@ -215,7 +215,7 @@ void darkShow(int tablica[40][20], int x, int y, string wyposazenie){
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 40; j++) {
                 if(y == i && x == j){
-                    kolory(1);
+                    kolory(97);
                     cout << char(1);
                     check = true;
                 }
