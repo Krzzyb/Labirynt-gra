@@ -38,7 +38,7 @@ void equipment(string wyposazenie){
         kolory(13);
         cout << char(14); 
         kolory(7);
-        cout << " ,aby wylosowac element wyposazenia.\n";
+        cout << ", aby wylosowac element wyposazenia.\n";
     }
     if(wyposazenie == "wykrywacz"){
         cout << " - wykrywacz metalu (dziala na kratke do przodu, do tylu i na boki)\n";
@@ -651,7 +651,7 @@ void przebieg(int tabela[40][20], int lives, int x, int y, int luckFactor, strin
     int setlives = lives;
     livescounter(lives);
     cout << endl;
-    darkShow(tabela,x,y,wyposazenie);
+    darkShow(tabela, x, y, wyposazenie);
     while (lives>0) {
         int rozmiary = 20, rozmiarx = 40;
         int i = getch();
@@ -695,14 +695,16 @@ void przebieg(int tabela[40][20], int lives, int x, int y, int luckFactor, strin
             darkShow(tabela,x,y,wyposazenie);
         }
     }
-    system("CLS");
-    cout << "Koniec gry, straciles wszystkie swoje zycia\n";
-    cout << endl;
-    cout << "Oto plansza po ktorej sie poruszales:\n";
-    prettyShow(tabela, x,y);
-    cout << endl;
-    cout << "nacisnij ENTER, aby wrocic do main Menu\n";
-    getchar();
+    if (lives <= 0){
+        system("CLS");
+        cout << "Koniec gry, straciles wszystkie swoje zycia\n";
+        cout << endl;
+        cout << "Oto plansza po ktorej sie poruszales:\n";
+        prettyShow(tabela, x,y);
+        cout << endl;
+        cout << "nacisnij ENTER, aby wrocic do main Menu\n";
+        getchar();
+    }
 }
 void mainOptions(int &size, bool &pasekLadowania){
     kolory(7);
@@ -843,6 +845,7 @@ void startMenu(int tabela [40][20] = {0}){
         if(i == 13){
             switch (n){
             case 0:
+                x = 0, y = 0;
                 resetArray(tabela);
                 wyposazenie = "nic";
                 randPath(tabela);
