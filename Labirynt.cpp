@@ -411,7 +411,7 @@ void randPath(int tabela[40][20]) {
         }
     }
 }
-void newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luckFactor){
+int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luckFactor){
     bombs = 0;
     boxes = 0;
     hospitals = 0;
@@ -451,6 +451,9 @@ void newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luc
             if (i == 72 && n > 0) n--;
             else if (i == 80 && n < 3) n++;
         }
+        if(i == 27){
+            return 1;
+        }
         if(i == 13){
             switch (n){
             case 0:
@@ -459,21 +462,21 @@ void newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luc
                 hospitals = 15;
                 lives = 8;
                 luckFactor = 5;
-                return;
+                return 0;
             case 1:
                 bombs = 80;
                 boxes = 20;
                 hospitals = 8;
                 lives = 5;
                 luckFactor = 2;
-                return;
+                return 0;
             case 2:
                 bombs = 150;
                 boxes = 10;
                 hospitals = 3;
                 lives = 3;
                 luckFactor = 0;
-                return;
+                return 0;
             case 3:
                 do{
                     system("CLS");
@@ -496,7 +499,7 @@ void newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luc
                 cout << "Jaki luckFactor?\n" << "(jest to wartosc od 0 do 10, ktora definuje szczescie w losowaniu wyposazenia\n";
                 cout << " - jesli chcesz miec pewnosc, ze zawsze cos wylosujesz, wpisz wartosc wieksza od 10):\n";
                 cin >> luckFactor;
-                return;
+                return 0;
             }
         }
 
@@ -858,8 +861,12 @@ void startMenu(int tabela [40][20] = {0}){
                 x = 0, y = 0;
                 resetArray(tabela);
                 wyposazenie = "nic";
+                
+                // int esc = newGameOptions(bombs, boxes, hospitals, lives, luckFactor);
+                if(newGameOptions(bombs, boxes, hospitals, lives, luckFactor) == 1){ 
+                    break;
+                }
                 randPath(tabela);
-                newGameOptions(bombs, boxes, hospitals, lives, luckFactor);
                 system("CLS");
                 randItems(tabela, bombs, boxes, hospitals, pasekLadowania);
                 przebieg(tabela, lives, x, y, luckFactor, wyposazenie);
