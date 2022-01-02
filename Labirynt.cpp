@@ -493,8 +493,8 @@ void newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luc
                 }while(740 < bombs + boxes + hospitals);
                 cout << "Ile zyc?  -  ";
                 cin >> lives;
-                cout << "Jaki luckFactor?\n" << "(jest to wartosc od 0 do 10, ktora definuje szczescie w losowaniu wyposazenia";
-                cout << " - jesli chcesz miec pewnosc, ze zawsze cos wylosujesz, wpisz wartosc wieksza od 10)";
+                cout << "Jaki luckFactor?\n" << "(jest to wartosc od 0 do 10, ktora definuje szczescie w losowaniu wyposazenia\n";
+                cout << " - jesli chcesz miec pewnosc, ze zawsze cos wylosujesz, wpisz wartosc wieksza od 10):\n";
                 cin >> luckFactor;
                 return;
             }
@@ -507,67 +507,77 @@ void randItems(int tabela[40][20], int bombs, int boxes, int hospitals, bool pas
     srand(time(NULL));
     int X = 0, Y = 0;
     
-    for (int i = 0; i < bombs; i++) {
-    
-        X = rand() % 40;
-        Y = rand() % 20;
-        if (tabela[X][Y] == 0) {
-            tabela[X][Y] = 2;
-        }else i--;
+    for (int i = 0; i <= bombs; i++) {
+        cout << "\x1B[2K";           // To są ANSI escape code - szybsze niż system("CLS")
+        if(i < bombs){
+            X = rand() % 40;
+            Y = rand() % 20;
+            if (tabela[X][Y] == 0) {
+                tabela[X][Y] = 2;
+            }else i--;
+        } // Tu i w dalszych przypadkach zastosowałem if'a, ponieważ musiałem dać w pętli for wyżej, mniejszy równy, aby w wypadku małych wartości pasek postępu na końcu losowania był pełny
         cout << "Losowanie min...\n";
+        cout << "\x1B[2K";
         if(pasekLadowania == true){ 
             cout << "|";
-            for(int n = 0; n < 50 * i / bombs; n++ ){
-                cout << char(178);
-            }
-            for(int j=0; j < 50 - 50 * i / bombs; j++){
-                cout << " ";
+            for(int n = 0; n < 50; n++ ){
+                if(n <= 50 * i / bombs) cout << char(178);
+                if(n > 50 * i / bombs) cout << " ";
+                
             }
             cout << "|"; 
-            //getchar();
-            system("CLS");
         }
+        cout << "\x1B[1F";
     }
-    for (int i = 0; i < boxes; i++){
-        X = rand() % 40;
-        Y = rand() % 20;
-        if (tabela[X][Y] == 0) {
-            tabela[X][Y] = 3;
-        }else i--;
+    
+    cout << "\x1B[2E";
+    
+    for (int i = 0; i <= boxes; i++){
+        cout << "\x1B[2K";
+        if(i < boxes){
+            X = rand() % 40;
+            Y = rand() % 20;
+            if (tabela[X][Y] == 0) {
+                tabela[X][Y] = 3;
+            }else i--;
+        }
         cout << "Losowanie niespodzianek...\n";
+        cout << "\x1B[2K";
         if(pasekLadowania == true){ 
             cout << "|";
-            for(int n = 0; n < 50 * i / boxes; n++ ){
-                cout << char(178);
-            }
-            for(int j=0; j < 50 - 50 * i / boxes; j++){
-                cout << " ";
+            for(int n = 0; n < 50; n++ ){
+                if(n <= 50*i/boxes) cout << char(178);
+                if(n > 50 * i/boxes) cout << " ";
             }
             cout << "|"; 
-            //getchar();
-            system("CLS");
         }
+        cout << "\x1B[1F";
     }
-    for (int i = 0; i < hospitals; i++){
-        X = rand() % 40;
-        Y = rand() % 20;
-        if (tabela[X][Y] == 0) {
-            tabela[X][Y] = 4;
-        }else i--;
+    
+    cout << "\x1B[2E";
+    for (int i = 0; i <= hospitals; i++){
+        cout << "\x1B[2K";
+        if(i < hospitals){    
+            X = rand() % 40;
+            Y = rand() % 20;
+            if (tabela[X][Y] == 0) {
+                tabela[X][Y] = 4;
+            }else i--;
+        }
         cout << "Losowanie szpitali...\n";
+        cout << "\x1B[2K";
         if(pasekLadowania == true){ 
             cout << "|";
-            for(int n = 0; n < 50 * i / hospitals; n++ ){
-                cout << char(178);
-            }
-            for(int j=0; j < 50 - 50 * i / hospitals; j++){
-                cout << " ";
+            for(int n = 0; n < 50; n++ ){
+                if(n <= 50 * i / hospitals) cout << char(178);
+                if(n > 50 * i / hospitals) cout << " ";
             }
             cout << "|"; 
-            //getchar();
-            system("CLS");
         }
+        cout << "\x1B[1F";
     }
+    
+    cout << "\x1B[2E";
     cout << "Zakonczono losowanie, nacisnij ENTER, aby rozpoczac gre";
     getchar();
     system("CLS");
@@ -745,7 +755,7 @@ void mainOptions(int &size, bool &pasekLadowania){
         cout << "Custom\n";
         kolory(7);
         cout << endl;
-        cout << "____Opcje graficzne____\n" << "(ekran paska postepu jest dosc zasobozerny)\n";
+        cout << "____Opcje graficzne____\n" << "(ekran paska postepu jest dosc zasobozerny) - teraz juz nie wiec to tylko kwestia gustu\n";
         if (n == 4) { 
             kolory(1);
             cout << " " << char(175) << " ";
