@@ -82,7 +82,7 @@ int main()
     //zapis.close();
 
     /*fstream plik;
-    plik.open("C:\\Intel\\test.txt", ios::in);
+plik.open("C:\\Intel\\test.txt", ios::in);  
     
     if(plik.is_open()){
         for (int i = 0; i<10; i++){
