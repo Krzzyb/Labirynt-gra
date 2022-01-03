@@ -15,12 +15,11 @@ matrix[0] = new int[5];
 matrix[1] = new int[2];
 matrix[2] = new int[4];
 }
-void zapelnianie(int **& tablica, int X, int Y){
+void zapelnianie(int **& tablica, int X, int Y, int n){
     for(int j = 0; j < Y; j++){
         for(int i = 0; i < X; i++){
-            tablica[j][i] = 1;
+            tablica[j][i] = n;
         }
-        cout << endl;
     }
 }
 void create(int **& tablica, int X, int Y){
@@ -41,7 +40,7 @@ int main()
 {
     int **matrix;
     create(matrix, 20, 10);
-    zapelnianie(matrix, 20, 10);
+    zapelnianie(matrix, 20, 10, 5);
     print(matrix, 20, 10);
 
  delete [] matrix;

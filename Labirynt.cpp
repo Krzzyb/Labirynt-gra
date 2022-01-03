@@ -7,7 +7,21 @@
 #include <fstream>
 
 using namespace std;
-
+int X, Y;
+int **tablica;
+void create(){
+    tablica = new int*[Y];
+    for(int j = 0; j < Y; j++){
+        tablica[j] = new int[X];
+    }
+}
+void resetArray(){
+    for(int j = 0; j < Y; j++){
+        for(int i = 0; i < X; i++){
+            tablica[j][i] = 0;
+        }
+    }
+}
 void kolory(int k) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, k);
@@ -23,9 +37,9 @@ void textSize (int size){
     wcscpy(cfi.FaceName, L"Consolas"); // Choose your font
     SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 }
-void pokaz(int tablica[40][20]) {
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 40; j++) {
+void pokaz() {
+    for (int i = 0; i < Y; i++) {
+        for (int j = 0; j < X; j++) {
             cout << " " << tablica[j][i];
         }
         cout << endl;
@@ -60,10 +74,10 @@ void legenda(string typ){
         
     }
 }
-void prettyShow(int tablica[40][20], int x, int y) {
+void prettyShow(int x, int y) {
 // już nieaktualna funkcja
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 40; j++) {
+    for (int i = 0; i < Y; i++) {
+        for (int j = 0; j < X; j++) {
             if (y == i && x == j) {
                 kolory(98);
                 cout << char(197);
@@ -105,11 +119,11 @@ void prettyShow(int tablica[40][20], int x, int y) {
     kolory(7);
     //legenda("gra");
 }
-void darkShow(int tablica[40][20], int x, int y, string wyposazenie){
+void darkShow(int x, int y, string wyposazenie){
     if(wyposazenie == "nic"){
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 40; j++) {
-                if(y == i && x == j){
+        for (int j = 0; j < Y; j++) {
+            for (int i = 0; i < X; i++) {
+                if(y == j && x == i){
                     kolory(97);
                     cout << char(1);
                 }else{
@@ -141,9 +155,9 @@ void darkShow(int tablica[40][20], int x, int y, string wyposazenie){
     }
     bool check = false;
     if(wyposazenie == "wykrywacz"){
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 40; j++) {
-                if(y == i && x == j){
+        for (int j = 0; j < Y; j++) {
+            for (int i = 0; i < X; i++) {
+                if(y == j && x == i){
                     kolory(97);
                     cout << char(1);
                     check = true;
@@ -210,9 +224,9 @@ void darkShow(int tablica[40][20], int x, int y, string wyposazenie){
     }
 
     if(wyposazenie == "sonar"){
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 40; j++) {
-                if(y == i && x == j){
+        for (int j = 0; j < Y; j++) {
+            for (int i = 0; i < X; i++) {
+                if(y == j && x == i){
                     kolory(97);
                     cout << char(1);
                     check = true;
@@ -338,7 +352,7 @@ void loadSettings(int &size, bool &pasekLadowania){
     }
     plik.close();
 }
-void loadGame(int tablica[40][20], int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
+void loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
     fstream plik;
     string linijka;
     plik.open("C:\\Intel\\Labirynt_gra\\zapis_gry.txt", ios::in);
@@ -357,10 +371,15 @@ void loadGame(int tablica[40][20], int &x, int &y, int &lives, int &luckFactor, 
         getline(plik, linijka);
         getline(plik, linijka);
         wyposazenie = linijka;
-        for (int i = 0; i < 20; i++) {
+        getline(plik, linijka);
+        getline(plik, linijka);
+        X = stoi(linijka);
+        getline(plik, linijka);
+        Y = stoi(linijka);
+        for (int i = 0; i < Y; i++) {
             getline(plik, linijka);
-            for (int j = 0; j < 40; j++) {
-                tablica[j][i] = linijka[j] - 48;
+            for (int j = 0; j < X; j++) {
+                tablica[i][j] = linijka[j] - 48;
             }
         }
     }else{
@@ -368,15 +387,15 @@ void loadGame(int tablica[40][20], int &x, int &y, int &lives, int &luckFactor, 
     }
     plik.close();
     cout << lives << " " << x << " " << y << endl;
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 40; j++) {
-            cout << " " << tablica[j][i];
+    for (int i = 0; i < Y; i++) {
+        for (int j = 0; j < X; j++) {
+            cout << " " << tablica[i][j];
         }
         cout << endl;
     }
     system("CLS");
 }
-void saveGame (int tablica[40][20], int x, int y, int lives, int luckFactor, string wyposazenie){
+void saveGame (int x, int y, int lives, int luckFactor, string wyposazenie){
     string nazwa = "C:\\Intel\\Labirynt_gra\\";
     string tmp = "zapis_gry";
     //cin >> tmp; moze gdzies w przyszlosci zostanie dodane menu roznych zapisow gry
@@ -387,37 +406,111 @@ void saveGame (int tablica[40][20], int x, int y, int lives, int luckFactor, str
     plik << "player coordinates: \n" << x << endl << y << endl;
     plik << "luckFactor: \n" << luckFactor << endl;
     plik << "equipment: \n" << wyposazenie << endl;
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 40; j++) {
-            plik << tablica[j][i];
+    plik << "matrix size x, y: \n" << X << endl << Y << endl;
+    for (int i = 0; i < Y; i++) {
+        for (int j = 0; j < X; j++) {
+            plik << tablica[i][j];
         }
         plik << endl;
     }
     plik.close();
 }
-void randPath(int tabela[40][20]) {
+void randPath() {
+    create();
+    resetArray();
     srand(time(NULL));
-    int I, X = 0, Y = 0;
-    tabela[X][Y] = 1;
-    while (tabela[39][19] == 0) {
+    int I, x = 0, y = 0;
+    tablica[y][x] = 1;
+    do{
         I = rand() % 2;
-        if (I == 0 && X + 1 != 40) {
-            X++;
-            tabela[X][Y] = 1;
+        if (I == 0 && x+1 != X) {
+            x++;
+            tablica[y][x] = 1;
         }
-        if (I == 1 && Y + 1 != 20) {
-            Y++;
-            tabela[X][Y] = 1;
+        if (I == 1 && y+1  != Y) {
+            y++;
+            tablica[y][x] = 1;
         }
-    }
+    }while (tablica[Y-1][X-1] == 0);
 }
 int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luckFactor){
     bombs = 0;
     boxes = 0;
     hospitals = 0;
+    bool done = false;
     system("CLS");
     kolory(7);
     int n = 0;
+    while (true){
+        system("CLS");
+        cout << "Wybierz wielkosc planszy:\n";
+        if (n == 0) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Small - 20x10\n";
+        kolory(7);
+        if (n == 1) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Medium - 40x20\n";
+        kolory(7);
+        if (n == 2) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Big - 60x30\n";
+        kolory(7);
+        if (n == 3) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Custom\n";
+        kolory(7);
+        int i = getch();
+        if(i == 0 || i == 224){
+            i = getch();
+            if (i == 72 && n > 0) n--;
+            else if (i == 80 && n < 3) n++;
+        }
+        if(i == 27){
+            return 1;
+        }
+        if(i == 13){
+            switch (n){
+            case 0:
+                X = 20, Y = 10;
+                done = true;
+                break;
+            case 1:
+                X = 40, Y = 20;
+                done = true;
+                break;
+            case 2:
+                X = 60, Y = 30;
+                done = true;
+                break;
+            case 3:
+                do{
+                    system("CLS");
+                    cout << "___Nowa gra___\n" << "Wpisz wartosci wielkosci planszy:\n";
+                    cout << "Maks: 100x50\n";
+                
+                    cout << "Jakie X?  -  ";
+                    cin >> Y;
+                    cout << endl;
+                    cout << "Jakie Y?  -  ";
+                    cin >> X;
+                    cout << endl;
+                    
+                    system("CLS");
+                }while(X <= 100 && Y <= 50);
+                done = true;
+            }
+        }
+        if(done == true)break;
+    }
     while (true){
         system("CLS");
         cout << "Wybierz poziom:\n";
@@ -506,19 +599,19 @@ int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luck
     }
     
 }
-void randItems(int tabela[40][20], int bombs, int boxes, int hospitals, bool pasekLadowania) {
+void randItems(int bombs, int boxes, int hospitals, bool pasekLadowania) {
     srand(time(NULL));
-    int X = 0, Y = 0;
+    int x = 0, y = 0;
     
     for (int i = 0; i <= bombs; i++) {
         cout << "\x1B[2K";           // To są ANSI escape code - szybsze niż system("CLS")
-        if(i < bombs){
-            X = rand() % 40;
-            Y = rand() % 20;
-            if (tabela[X][Y] == 0) {
-                tabela[X][Y] = 2;
+        if(i < bombs){// Tu i w dalszych przypadkach zastosowałem if'a, ponieważ musiałem dać w pętli for wyżej, mniejszy równy, aby w wypadku małych wartości pasek postępu na końcu losowania był pełny
+            x = rand() % X;
+            y = rand() % Y;
+            if (tablica[y][x] == 0) {
+                tablica[y][x] = 2;
             }else i--;
-        } // Tu i w dalszych przypadkach zastosowałem if'a, ponieważ musiałem dać w pętli for wyżej, mniejszy równy, aby w wypadku małych wartości pasek postępu na końcu losowania był pełny
+        } 
         cout << "Losowanie min...\n";
         cout << "\x1B[2K";
         if(pasekLadowania == true){ 
@@ -538,10 +631,10 @@ void randItems(int tabela[40][20], int bombs, int boxes, int hospitals, bool pas
     for (int i = 0; i <= boxes; i++){
         cout << "\x1B[2K";
         if(i < boxes){
-            X = rand() % 40;
-            Y = rand() % 20;
-            if (tabela[X][Y] == 0) {
-                tabela[X][Y] = 3;
+            x = rand() % X;
+            y = rand() % Y;
+            if (tablica[y][x] == 0) {
+                tablica[y][x] = 3;
             }else i--;
         }
         cout << "Losowanie niespodzianek...\n";
@@ -561,10 +654,10 @@ void randItems(int tabela[40][20], int bombs, int boxes, int hospitals, bool pas
     for (int i = 0; i <= hospitals; i++){
         cout << "\x1B[2K";
         if(i < hospitals){    
-            X = rand() % 40;
-            Y = rand() % 20;
-            if (tabela[X][Y] == 0) {
-                tabela[X][Y] = 4;
+            x = rand() % X;
+            y = rand() % Y;
+            if (tablica[y][x] == 0) {
+                tablica[y][x] = 4;
             }else i--;
         }
         cout << "Losowanie szpitali...\n";
@@ -591,14 +684,8 @@ void livescounter(int lives){
         cout<<char(3);
     }
 }
-void resetArray(int tabela[40][20] = {0}){
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 40; j++) {
-            tabela[j][i] = 0;
-        }
-    }
-}
-int menu(int tabela [40][20], int x, int y, int lives, int luckFactor, string wyposazenie){
+
+int menu(int x, int y, int lives, int luckFactor, string wyposazenie){
     system("CLS");
     kolory(7);
     int n = 0;
@@ -642,11 +729,11 @@ int menu(int tabela [40][20], int x, int y, int lives, int luckFactor, string wy
                 system("CLS");
                 livescounter(lives);
                 cout << endl;
-                darkShow(tabela,x,y,"nic");
+                darkShow(x,y,"nic");
                 return 1;
             case 1:
                 system("CLS");
-                saveGame(tabela, x, y, lives, luckFactor, wyposazenie);
+                saveGame(x, y, lives, luckFactor, wyposazenie);
                 cout << "Zapisano";
                 break;
             case 2:
@@ -660,16 +747,16 @@ int menu(int tabela [40][20], int x, int y, int lives, int luckFactor, string wy
     
     
 }
-void przebieg(int tabela[40][20], int lives, int x, int y, int luckFactor, string wyposazenie){
+void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie){
     int setlives = lives;
     livescounter(lives);
     cout << endl;
-    darkShow(tabela, x, y, wyposazenie);
+    darkShow(x, y, wyposazenie);
     while (lives>0) {
-        int rozmiary = 20, rozmiarx = 40;
+        int rozmiary = Y, rozmiarx = X;
         int i = getch();
         if (i == 27){
-            int wynikMenu = menu(tabela, x, y, lives, luckFactor, wyposazenie);
+            int wynikMenu = menu(x, y, lives, luckFactor, wyposazenie);
             if(wynikMenu == 0){
                 return;
             }
@@ -686,18 +773,18 @@ void przebieg(int tabela[40][20], int lives, int x, int y, int luckFactor, strin
             if (x < 0) x = 0;
             else if (x >= rozmiarx) x = rozmiarx - 1;
             system("CLS");
-            if(tabela[x][y] == 2){
-                tabela[x][y] = 5;
+            if(tablica[y][x] == 2){
+                tablica[y][x] = 5;
                 lives--;
             }
-            if(tabela[x][y] == 3){
+            if(tablica[y][x] == 3){
                 randEquip(wyposazenie, luckFactor);
-                tabela[x][y] = 6;
+                tablica[y][x] = 6;
             }
-            if(tabela[x][y] == 4){
+            if(tablica[y][x] == 4){
                 lives = setlives;
             }
-            if( x == 39 && y == 19){
+            if( x+1 == X && y+1 == Y){
                 cout<<"Gratulacje! Dotarles do punktu zbiorki - jestes teraz bezpieczny.\n";
                 cout << "Nacisnij ENTER, aby wrocic do main Menu";
                 getchar();
@@ -705,7 +792,7 @@ void przebieg(int tabela[40][20], int lives, int x, int y, int luckFactor, strin
             }
             livescounter(lives);
             cout<<endl;
-            darkShow(tabela,x,y,wyposazenie);
+            darkShow(x,y,wyposazenie);
         }
     }
     if (lives <= 0){
@@ -713,7 +800,7 @@ void przebieg(int tabela[40][20], int lives, int x, int y, int luckFactor, strin
         cout << "Koniec gry, straciles wszystkie swoje zycia\n";
         cout << endl;
         cout << "Oto plansza po ktorej sie poruszales:\n";
-        prettyShow(tabela, x,y);
+        prettyShow(x,y);
         cout << endl;
         cout << "nacisnij ENTER, aby wrocic do main Menu\n";
         getchar();
@@ -814,7 +901,7 @@ void mainOptions(int &size, bool &pasekLadowania){
     }
 }
 
-void startMenu(int tabela [40][20] = {0}){
+void startMenu(){
     kolory(7);
     int n = 0, x = 0, y = 0;
     int bombs, boxes, hospitals, lives, size, luckFactor;
@@ -859,23 +946,23 @@ void startMenu(int tabela [40][20] = {0}){
             switch (n){
             case 0:
                 x = 0, y = 0;
-                resetArray(tabela);
+                
                 wyposazenie = "nic";
                 
-                // int esc = newGameOptions(bombs, boxes, hospitals, lives, luckFactor);
                 if(newGameOptions(bombs, boxes, hospitals, lives, luckFactor) == 1){ 
                     break;
                 }
-                randPath(tabela);
+                
+                randPath();
                 system("CLS");
-                randItems(tabela, bombs, boxes, hospitals, pasekLadowania);
-                przebieg(tabela, lives, x, y, luckFactor, wyposazenie);
-                resetArray(tabela);
+                randItems(bombs, boxes, hospitals, pasekLadowania);
+                przebieg(lives, x, y, luckFactor, wyposazenie);
+                resetArray();
                 break; 
             case 1:
                 system("CLS");
-                loadGame(tabela, x, y, lives, luckFactor, wyposazenie);
-                przebieg(tabela, lives, x, y, luckFactor, wyposazenie);
+                loadGame(x, y, lives, luckFactor, wyposazenie);
+                przebieg(lives, x, y, luckFactor, wyposazenie);
                 break;
             case 2:
                 mainOptions(size, pasekLadowania);
@@ -890,7 +977,6 @@ void startMenu(int tabela [40][20] = {0}){
 
 int main()
 {
-    int tabela[40][20] = { 0 };
     SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE),CONSOLE_FULLSCREEN_MODE,0);
-    startMenu(tabela);
+    startMenu();
 }

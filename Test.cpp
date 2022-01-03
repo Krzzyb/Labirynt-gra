@@ -4,8 +4,10 @@
 #include <conio.h>
 #include <cwchar>
 #include <vector>
+#include <time.h>
 using namespace std;
-
+int X, Y;
+int **tablica;
 void kolor(int k){
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, k);
@@ -21,9 +23,44 @@ void size(int size){
     wcscpy(cfi.FaceName, L"Consolas"); // Choose your font
     SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 }
-int arrayToVector(int tablica[40][20]){
-    vector<vector<int>> vtablica(begin(tablica), end(tablica));
-    return vtablica;
+void randPath() {
+    srand(time(NULL));
+    int I, x = 0, y = 0;
+    tablica[x][y] = 1;
+    while (tablica[X-1][Y-1] == 0) {
+        I = rand() % 2;
+        if (I == 0 && x+1 != X) {
+            x++;
+            tablica[x][y] = 1;
+        }
+        if (I == 1 && y+1  != Y) {
+            y++;
+            tablica[x][y] = 1;
+        }
+    }
+}
+void create(){
+    tablica = new int*[Y];
+    for(int j = 0; j < Y; j++){
+        tablica[j] = new int[X];
+    }
+    cout << "Succesfully created\n";
+}
+void pokaz() {
+    for (int i = 0; i < Y; i++) {
+        for (int j = 0; j < X; j++) {
+            cout << " " << tablica[j][i];
+        }
+        cout << endl;
+    }
+    cout << "Succesfully wrote";
+}
+void resetArray(){
+    for(int j = 0; j < Y; j++){
+        for(int i = 0; i < X; i++){
+            tablica[j][i] = 0;
+        }
+    }
 }
 int main(){
     for (int i = 0; i<256; i++){
@@ -34,22 +71,17 @@ int main(){
     for (int i = 0; i<=256; i++){
         cout << i << ". " << char(i)<<endl;
     }
-    while(true){
-        int i = getch();
-        cout << i << endl;
-    }
-    size(30);
+
+    size(20);
     cout << "Font: Consolas, Size: 24\n";
 
-    int array[40][20] = {0};
-    int vtablica = arrayToVector(array);
-    for (int i = 0; i < vtablica.size(); i++)
-    {
-        for (int j = 0; j < vtablica[i].size(); j++)
-        {
-            cout << vtablica[i][j] << " ";
-        }   
-        cout << endl;
-    }
+    
+    
+    X = 10, Y = 10;
+    create();
+    resetArray();
+    randPath();
+    pokaz();
+    getchar();
     return 0;
 }
