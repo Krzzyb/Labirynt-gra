@@ -5,6 +5,7 @@
 #include <cwchar>
 #include <vector>
 #include <time.h>
+#include <cmath>
 using namespace std;
 int X, Y;
 int **tablica;
@@ -215,16 +216,18 @@ int main(){
 
     
     
-    X = 10, Y = 10;
+    X = 20, Y = 10;
     create();
     resetArray();
-    randPath();
-    pokaz();
+   // randPath();
+    //pokaz();
     getchar();
     //win();
     Beep (400,300);Sleep(125);
     Beep (300,300);Sleep(125);
     Beep (200,500);Sleep(125);
-
+    float cos = 3.00*(X*Y-X-Y)/740;
+    cout << ceil(cos); 
+    getchar();
     return 0;
 }

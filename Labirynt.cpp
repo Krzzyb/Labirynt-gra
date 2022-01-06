@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <stdlib.h>
 #include <fstream>
+#include <cmath>
 
 using namespace std;
 int X, Y;
@@ -179,7 +180,7 @@ void darkShow(int x, int y, string wyposazenie, string mapKeyType){
                     cout << char(1);
                     check = true;
                 }
-                if((y-1 == i && x == j)||(y == i && x-1 == j)||(y+1 == i && x == j)||(y == i && x+1 == j)){
+                if((y-1 == j && x == i)||(y == j && x-1 == i)||(y+1 == j && x == i)||(y == j && x+1 == i)){
                     if (tablica[j][i] == 2) {
                         kolory(100);
                         cout << char(15);
@@ -248,12 +249,12 @@ void darkShow(int x, int y, string wyposazenie, string mapKeyType){
                     cout << char(1);
                     check = true;
                 }
-                if((y-1 == i && x == j)||(y-2 == i && x == j)||
-                    (y == i && x-1 == j)||(y == i && x-2 == j)||
-                    (y+1 == i && x == j)||(y+2 == i && x == j)||
-                    (y == i && x+1 == j)||(y == i && x+2 == j)||
-                    (y-1 == i && x-1 == j)||(y+1 == i && x+1 == j)||
-                    (y-1 == i && x+1 == j)||(y+1 == i && x-1 ==j)){
+                if((y-1 == j && x == i)||(y-2 == j && x == i)||
+                    (y == j && x-1 == i)||(y == j && x-2 == i)||
+                    (y+1 == j && x == i)||(y+2 == j && x == i)||
+                    (y == j && x+1 == i)||(y == j && x+2 == i)||
+                    (y-1 == j && x-1 == i)||(y+1 == j && x+1 == i)||
+                    (y-1 == j && x+1 == i)||(y+1 == j && x-1 ==i)){
                     if (tablica[j][i] == 2) {
                         kolory(100);
                         cout << char(15);
@@ -400,7 +401,8 @@ void loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
         for (int i = 0; i < Y; i++) {
             getline(plik, linijka);
             for (int j = 0; j < X; j++) {
-                tablica[i][j] = (int) linijka[j];
+                char n = linijka[j];
+                tablica[i][j] = (int)n;
             }
         }
     }else{
@@ -573,23 +575,23 @@ int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luck
         if(i == 13){
             switch (n){
             case 0:
-                bombs = 50;
-                boxes = 30;
-                hospitals = 15;
+                bombs = ceil(50.00*(X*Y-X-Y)/740.00);
+                boxes = ceil(30.00*(X*Y-X-Y)/740.00);
+                hospitals = ceil(15.00*(X*Y-X-Y)/740.00);
                 lives = 8;
                 luckFactor = 5;
                 return 0;
             case 1:
-                bombs = 80;
-                boxes = 20;
-                hospitals = 8;
+                bombs = ceil(80.00*(X*Y-X-Y)/740.00);
+                boxes = ceil(20.00*(X*Y-X-Y)/740.00);
+                hospitals = ceil(8.00*(X*Y-X-Y)/740.00);
                 lives = 5;
                 luckFactor = 2;
                 return 0;
             case 2:
-                bombs = 150;
-                boxes = 10;
-                hospitals = 3;
+                bombs = ceil(150.00*(X*Y-X-Y)/740.00);
+                boxes = ceil(10.00*(X*Y-X-Y)/740.00);
+                hospitals = ceil(3.00*(X*Y-X-Y)/740.00);
                 lives = 3;
                 luckFactor = 0;
                 return 0;
@@ -597,7 +599,7 @@ int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luck
                 do{
                     system("CLS");
                     cout << "___Nowa gra___\n" << "Wpisz wartosci:\n";
-                    cout << "Pamietaj, ze ich suma nie moze przekroczyc: 740\n";
+                    cout << "Pamietaj, ze ich suma nie moze przekroczyc: " << X*Y - X - Y << endl;
                 
                     cout << "Ile bomb?  -  ";
                     cin >> bombs;
@@ -609,7 +611,7 @@ int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luck
                     cin >> hospitals; 
                     cout << endl;
                     system("CLS");
-                }while(740 < bombs + boxes + hospitals);
+                }while(X*Y - X - Y < bombs + boxes + hospitals);
                 cout << "Ile zyc?  -  ";
                 cin >> lives;
                 cout << "Jaki luckFactor?\n" << "(jest to wartosc od 0 do 10, ktora definuje szczescie w losowaniu wyposazenia\n";
@@ -637,7 +639,7 @@ void randItems(int bombs, int boxes, int hospitals, bool pasekLadowania) {
         } 
         cout << "Losowanie min...\n";
         cout << "\x1B[2K";
-        if(pasekLadowania == true){ 
+        if(pasekLadowania == true && bombs > 0){ 
             cout << "|";
             for(int n = 0; n < 50; n++ ){
                 if(n <= 50 * i / bombs) cout << char(178);
@@ -662,7 +664,7 @@ void randItems(int bombs, int boxes, int hospitals, bool pasekLadowania) {
         }
         cout << "Losowanie niespodzianek...\n";
         cout << "\x1B[2K";
-        if(pasekLadowania == true){ 
+        if(pasekLadowania == true && bombs > 0){ 
             cout << "|";
             for(int n = 0; n < 50; n++ ){
                 if(n <= 50*i/boxes) cout << char(178);
@@ -685,11 +687,11 @@ void randItems(int bombs, int boxes, int hospitals, bool pasekLadowania) {
         }
         cout << "Losowanie szpitali...\n";
         cout << "\x1B[2K";
-        if(pasekLadowania == true){ 
+        if(pasekLadowania == true && bombs > 0){ 
             cout << "|";
             for(int n = 0; n < 50; n++ ){
-                if(n <= 50 * i / hospitals) cout << char(178);
-                if(n > 50 * i / hospitals) cout << " ";
+                if(n <= 50 * (i / hospitals)) cout << char(178);
+                if(n > 50 * (i / hospitals)) cout << " ";
             }
             cout << "|"; 
         }
