@@ -37,6 +37,20 @@ void textSize (int size){
     wcscpy(cfi.FaceName, L"Consolas"); // Choose your font
     SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 }
+void surpriseSound(){
+    Beep (330,100);Sleep(100);
+    Beep (330,100);Sleep(300);
+    Beep (330,100);Sleep(300);
+    Beep (262,100);Sleep(100);
+    Beep (330,100);Sleep(300);
+    Beep (392,100);Sleep(700);
+}
+void bombSound(){
+    Beep (400,300);Sleep(125);
+    Beep (300,300);Sleep(125);
+    Beep (200,500);Sleep(125);
+}
+
 void pokaz() {
     for (int i = 0; i < Y; i++) {
         for (int j = 0; j < X; j++) {
@@ -783,17 +797,20 @@ void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie, strin
             else if (x >= rozmiarx) x = rozmiarx - 1;
             system("CLS");
             if(tablica[y][x] == 2){
+               
                 tablica[y][x] = 5;
                 lives--;
             }
             if(tablica[y][x] == 3){
                 randEquip(wyposazenie, luckFactor);
+                
                 tablica[y][x] = 6;
             }
             if(tablica[y][x] == 4){
                 lives = setlives;
             }
             if( x+1 == X && y+1 == Y){
+                surpriseSound();
                 cout<<"Gratulacje! Dotarles do punktu zbiorki - jestes teraz bezpieczny.\n";
                 cout << "Nacisnij ENTER, aby wrocic do main Menu";
                 getchar();
@@ -806,6 +823,7 @@ void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie, strin
     }
     if (lives <= 0){
         system("CLS");
+        bombSound();
         cout << "Koniec gry, straciles wszystkie swoje zycia\n";
         cout << endl;
         cout << "Oto plansza po ktorej sie poruszales:\n";
