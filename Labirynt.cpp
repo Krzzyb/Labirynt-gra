@@ -73,6 +73,9 @@ void legenda(string typ){
         cout << "Kliknij esc, aby zobaczyc menu\n";
         
     }
+    if(typ == "brak"){
+        cout << "Legenda zostala wylaczona, udaj sie do ustawien glownych, by ja przywrocic";
+    }
 }
 void prettyShow(int x, int y) {
 // już nieaktualna funkcja
@@ -119,7 +122,7 @@ void prettyShow(int x, int y) {
     kolory(7);
     //legenda("gra");
 }
-void darkShow(int x, int y, string wyposazenie){
+void darkShow(int x, int y, string wyposazenie, string mapKeyType){
     if(wyposazenie == "nic"){
         for (int j = 0; j < Y; j++) {
             for (int i = 0; i < X; i++) {
@@ -298,7 +301,7 @@ void darkShow(int x, int y, string wyposazenie){
     }
     kolory(7);
     equipment(wyposazenie);
-    legenda("gra");
+    legenda(mapKeyType);
 }
 void randEquip(string &wyposazenie, int luckFactor){
     srand(time(NULL));
@@ -317,7 +320,7 @@ void randEquip(string &wyposazenie, int luckFactor){
         }
     }
 }
-void saveSettings(int size, bool pasekLadowania){
+void saveSettings(int size, bool pasekLadowania, string mapKeyType){
     string pasekLadowaniaString;
     if (pasekLadowania == true){
         pasekLadowaniaString = "true";
@@ -329,9 +332,10 @@ void saveSettings(int size, bool pasekLadowania){
     plik.open("C:\\Intel\\Labirynt_gra\\settings.txt", ios::out);
     plik << "text size: \n" << size << endl;
     plik << "pasek ladowania: \n" << pasekLadowaniaString << endl;
+    plik << "legenda: \n" << mapKeyType << endl;
     plik.close();
 }
-void loadSettings(int &size, bool &pasekLadowania){
+void loadSettings(int &size, bool &pasekLadowania, string &mapKeyType){
     fstream plik;
     string linijka;
     plik.open("C:\\Intel\\Labirynt_gra\\settings.txt", ios::in);
@@ -347,6 +351,9 @@ void loadSettings(int &size, bool &pasekLadowania){
         if(linijka == "false"){
             pasekLadowania = false;
         }
+        getline(plik, linijka);
+        getline(plik, linijka);
+        mapKeyType = linijka;
     }else{
         cout << "Nie otwarto pliku" << endl;
     }
@@ -379,7 +386,7 @@ void loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
         for (int i = 0; i < Y; i++) {
             getline(plik, linijka);
             for (int j = 0; j < X; j++) {
-                tablica[i][j] = linijka[j] - 48;
+                tablica[i][j] = (int) linijka[j];
             }
         }
     }else{
@@ -494,18 +501,20 @@ int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luck
             case 3:
                 do{
                     system("CLS");
-                    cout << "___Nowa gra___\n" << "Wpisz wartosci wielkosci planszy:\n";
-                    cout << "Maks: 100x50\n";
+                    cout << "___Nowa gra___\n" << "Wpisz wartosci wielkosci planszy:\n"; 
+                    cout << "Pamietaj o ograniczeniach swojego wyswietlacza - jesli wartosc Y bedzie zbyt duza, plansza bedzie sie obnizala do dolu!\n";
+                    cout << "Aby zyskac wiecej miejsca mozesz w ustawieniach glownych wylaczyc wyswietlanie legendy\n";
+                    cout << "Maks: 150x50\n";
                 
                     cout << "Jakie X?  -  ";
-                    cin >> Y;
-                    cout << endl;
-                    cout << "Jakie Y?  -  ";
                     cin >> X;
                     cout << endl;
+                    cout << "Jakie Y?  -  ";
+                    cin >> Y;
+                    cout << endl;
                     
-                    system("CLS");
-                }while(X <= 100 && Y <= 50);
+                    
+                }while(!(X <= 150 && Y <= 50));
                 done = true;
             }
         }
@@ -685,7 +694,7 @@ void livescounter(int lives){
     }
 }
 
-int menu(int x, int y, int lives, int luckFactor, string wyposazenie){
+int menu(int x, int y, int lives, int luckFactor, string wyposazenie, string mapKeyType){
     system("CLS");
     kolory(7);
     int n = 0;
@@ -729,7 +738,7 @@ int menu(int x, int y, int lives, int luckFactor, string wyposazenie){
                 system("CLS");
                 livescounter(lives);
                 cout << endl;
-                darkShow(x,y,"nic");
+                darkShow(x,y,"nic", mapKeyType);
                 return 1;
             case 1:
                 system("CLS");
@@ -747,16 +756,16 @@ int menu(int x, int y, int lives, int luckFactor, string wyposazenie){
     
     
 }
-void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie){
+void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie, string mapKeyType){
     int setlives = lives;
     livescounter(lives);
     cout << endl;
-    darkShow(x, y, wyposazenie);
+    darkShow(x, y, wyposazenie, mapKeyType);
     while (lives>0) {
         int rozmiary = Y, rozmiarx = X;
         int i = getch();
         if (i == 27){
-            int wynikMenu = menu(x, y, lives, luckFactor, wyposazenie);
+            int wynikMenu = menu(x, y, lives, luckFactor, wyposazenie, mapKeyType);
             if(wynikMenu == 0){
                 return;
             }
@@ -792,7 +801,7 @@ void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie){
             }
             livescounter(lives);
             cout<<endl;
-            darkShow(x,y,wyposazenie);
+            darkShow(x,y,wyposazenie, mapKeyType);
         }
     }
     if (lives <= 0){
@@ -806,7 +815,7 @@ void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie){
         getchar();
     }
 }
-void mainOptions(int &size, bool &pasekLadowania){
+void mainOptions(int &size, bool &pasekLadowania, string &mapKeyType){
     kolory(7);
     int n = 0;
     while (true){
@@ -818,6 +827,9 @@ void mainOptions(int &size, bool &pasekLadowania){
         }else{
             cout << "wylaczony\n";
         }
+        cout << "Wyswietlanie legendy: ";
+        if(mapKeyType == "gra")cout << "Wlaczone\n";
+        else cout << "Wylaczone\n";
         cout << endl;
         cout << "____Opcje wielkosci obrazu____\n";
         if (n == 0) { 
@@ -845,21 +857,38 @@ void mainOptions(int &size, bool &pasekLadowania){
         cout << "Custom\n";
         kolory(7);
         cout << endl;
-        cout << "____Opcje graficzne____\n" << "(ekran paska postepu jest dosc zasobozerny) - teraz juz nie wiec to tylko kwestia gustu\n";
+        cout << endl;
+        cout << "____Opcje graficzne____\n";
+        cout << "Pasek ladowania - (ekran paska postepu jest dosc zasobozerny) - teraz juz nie wiec to tylko kwestia gustu\n";
         if (n == 4) { 
             kolory(1);
             cout << " " << char(175) << " ";
             }
-        cout << "Wlacz pasek postepu (piekny pasek postepu kosztem nieco wydluzonego czasu ladowania planszy)\n";
+        cout << "Wlacz\n";
         kolory(7);
         if (n == 5) { 
             kolory(1);
             cout << " " << char(175) << " ";
             }
-        cout << "Wylacz pasek postepu (brak paska postepu, ale szybsze ladowanie)\n";
+        cout << "Wylacz\n";
         kolory(7);
-        cout << endl;
         
+        cout << endl;
+        cout << endl;
+        cout << "Opcje wyswietlania legendy:\n";
+        if (n == 6) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Wlacz\n";
+        kolory(7);
+        if (n == 7) { 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Wylacz\n";
+        kolory(7);
+        cout << endl << endl;
         cout << "Nacisnij ESC aby wrocic do main Manu\n";
         
         int i = getch();
@@ -869,7 +898,7 @@ void mainOptions(int &size, bool &pasekLadowania){
         if(i == 0 || i == 224){
             i = getch();
             if (i == 72 && n > 0) n--;
-            else if (i == 80 && n < 5) n++;
+            else if (i == 80 && n < 7) n++;
         }
         if(i == 13){
             switch (n){
@@ -896,6 +925,12 @@ void mainOptions(int &size, bool &pasekLadowania){
             case 5:
                 pasekLadowania = false;
                 break;
+            case 6:
+                mapKeyType = "gra";
+                break;
+            case 7:
+                mapKeyType = "brak";
+                break;
             }
         }
     }
@@ -905,9 +940,10 @@ void startMenu(){
     kolory(7);
     int n = 0, x = 0, y = 0;
     int bombs, boxes, hospitals, lives, size, luckFactor;
-    string wyposazenie;
+    string wyposazenie, mapKeyType;
     bool pasekLadowania = true;
-    loadSettings(size, pasekLadowania);
+    
+    loadSettings(size, pasekLadowania, mapKeyType);
     textSize(size);
     while (true){
         system("CLS");
@@ -956,17 +992,17 @@ void startMenu(){
                 randPath();
                 system("CLS");
                 randItems(bombs, boxes, hospitals, pasekLadowania);
-                przebieg(lives, x, y, luckFactor, wyposazenie);
+                przebieg(lives, x, y, luckFactor, wyposazenie, mapKeyType);
                 resetArray();
                 break; 
             case 1:
                 system("CLS");
                 loadGame(x, y, lives, luckFactor, wyposazenie);
-                przebieg(lives, x, y, luckFactor, wyposazenie);
+                przebieg(lives, x, y, luckFactor, wyposazenie, mapKeyType);
                 break;
             case 2:
-                mainOptions(size, pasekLadowania);
-                saveSettings(size, pasekLadowania);
+                mainOptions(size, pasekLadowania, mapKeyType);
+                saveSettings(size, pasekLadowania, mapKeyType);
                 break;
             case 3:
                 exit(0);
