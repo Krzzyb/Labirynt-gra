@@ -377,6 +377,7 @@ void loadSettings(int &size, bool &pasekLadowania, string &mapKeyType){
 void loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
     fstream plik;
     string linijka;
+    
     plik.open("C:\\Intel\\Labirynt_gra\\zapis_gry.txt", ios::in);
     if(plik.is_open()){
         getline(plik, linijka);
@@ -398,15 +399,17 @@ void loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
         X = stoi(linijka);
         getline(plik, linijka);
         Y = stoi(linijka);
+        create();
         for (int i = 0; i < Y; i++) {
             getline(plik, linijka);
             for (int j = 0; j < X; j++) {
-                char n = linijka[j];
-                tablica[i][j] = (int)n;
+                
+                tablica[i][j] = (int) linijka[j] - 48;
             }
         }
     }else{
         cout << "Nie otwarto pliku" << endl;
+        getchar();
     }
     plik.close();
     cout << lives << " " << x << " " << y << endl;
