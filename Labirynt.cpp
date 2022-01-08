@@ -51,7 +51,11 @@ void bombSound(){
     Beep (300,300);Sleep(125);
     Beep (200,500);Sleep(125);
 }
-
+void betterClearBoard(){
+    // Zamiast system('CLS') - które jest mało wydajne i niebezpieczne, użyję kodów ASCII do czyszczenia ekranu gry
+    cout << "\x1B[2J";
+    cout << "\x1B[" << X + 11 << "F";
+}
 void pokaz() {
     for (int i = 0; i < Y; i++) {
         for (int j = 0; j < X; j++) {
@@ -94,9 +98,9 @@ void legenda(string typ){
 }
 void prettyShow(int x, int y) {
 // już nieaktualna funkcja
-    for (int i = 0; i < Y; i++) {
-        for (int j = 0; j < X; j++) {
-            if (y == i && x == j) {
+    for (int j = 0; j < Y; j++) {
+        for (int i = 0; i < X; i++) {
+            if (y == j && x == i) {
                 kolory(98);
                 cout << char(197);
             }
@@ -539,6 +543,7 @@ int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luck
         }
         if(done == true)break;
     }
+    n = 0;
     while (true){
         system("CLS");
         cout << "Wybierz poziom:\n";
@@ -618,13 +623,14 @@ int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luck
                 cout << "Ile zyc?  -  ";
                 cin >> lives;
                 cout << "Jaki luckFactor?\n" << "(jest to wartosc od 0 do 10, ktora definuje szczescie w losowaniu wyposazenia\n";
-                cout << " - jesli chcesz miec pewnosc, ze zawsze cos wylosujesz, wpisz wartosc wieksza od 10):\n";
+                cout << " - jesli chcesz miec pewnosc, ze zawsze cos wylosujesz, wpisz wartosc wieksza niz 10):\n";
                 cin >> luckFactor;
                 return 0;
             }
         }
 
     }
+    n = 0;
     
 }
 void randItems(int bombs, int boxes, int hospitals, bool pasekLadowania) {
@@ -800,7 +806,8 @@ void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie, strin
             else if (y >= rozmiary) y = rozmiary - 1;
             if (x < 0) x = 0;
             else if (x >= rozmiarx) x = rozmiarx - 1;
-            system("CLS");
+            //system("CLS");
+            betterClearBoard();
             if(tablica[y][x] == 2){
                
                 tablica[y][x] = 5;
