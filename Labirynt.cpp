@@ -388,7 +388,10 @@ void loadSettings(int &size, bool &pasekLadowania, string &mapKeyType){
     
 }
 int loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
-    ifstream plik("zapis_gry.txt");
+    string saveName;
+    cout << "Jak nazywa sie zapis ktory chcesz otworzyc?\n";
+    cin >> saveName;
+    ifstream plik(saveName + ".txt");
     string linijka;
     
     //plik.open("C:\\Intel\\Labirynt_gra\\zapis_gry.txt", ios::in);
@@ -421,8 +424,11 @@ int loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
             }
         }
     }else{
-        cout << "Nie otwarto pliku - prawdopodobnie jeszcze go nie ma, sprobuj zapisac najpierw jakas gre." << endl;
+        kolory(4);
+        cout << "Nie otwarto pliku - sprawdz pisownie i sprobuj ponownie" << endl;
+        Sleep(1000);
         getchar();
+        kolory(7);
         return 1;
     }
     plik.close();
@@ -437,8 +443,10 @@ int loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
     return 0;
 }
 void saveGame (int x, int y, int lives, int luckFactor, string wyposazenie){
-    
-    ofstream plik("zapis_gry.txt");
+    string saveName;
+    cout << "Jak chcesz nazwac zapis swojej rozgrywki?\n";
+    cin >> saveName;
+    ofstream plik(saveName + ".txt");
     //plik.open(tmp.c_str(), ios::out);
     plik << "lives: \n" << lives << endl;
     plik << "player coordinates: \n" << x << endl << y << endl;
