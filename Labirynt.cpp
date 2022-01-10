@@ -64,7 +64,7 @@ void pokaz() {
         }
         cout << endl;
     }
-}
+} 
 void equipment(string wyposazenie){
     cout << "____Twoje wyposazenie____\n";
     if(wyposazenie == "nic"){
@@ -723,7 +723,8 @@ void randItems(int bombs, int boxes, int hospitals, bool pasekLadowania) {
         cout << "\x1B[1F";
     }
     
-    cout << "\x1B[2E";
+    cout << "\x1B[3E";
+    
     cout << "Zakonczono losowanie, nacisnij ENTER, aby rozpoczac gre";
     getchar();
     system("CLS");
@@ -734,7 +735,19 @@ void livescounter(int lives){
         cout<<char(3);
     }
 }
-
+void opisGry(){
+    system("CLS");
+    cout << "\n\n\tWcielasz sie w przemytnika, musisz przejsc do kryjowki zlokalizowanej w prawym dolnym rogu planszy.\n\n";
+    Sleep(2000);
+    cout << "\tCala plansza jest zaminowana, na szczescie masz szanse na znalezienie wykrywacza metalu i sonaru, ktore pomoga ci unikac min.\n\n";
+    Sleep(2000);
+    cout << "\tNa planszy znajdziesz rowniez apteczki ktore przywroca ci pierwotna liczbe zyc.\n\n";
+    Sleep(2000);
+    cout << "\t\tNiezbyt ambitna ani ciekawa gierka, ale jest jaka jest\n" << "\x1b[3E";
+    Sleep(4000);
+    cout << "\t\t\tMade by Krzysztof Zybura";
+    getchar();
+}
 int menu(int x, int y, int lives, int luckFactor, string wyposazenie, string mapKeyType){
     system("CLS");
     kolory(7);
@@ -1016,13 +1029,19 @@ void startMenu(){
             kolory(1);
             cout << " " << char(175) << " ";
         }
+        cout << "O grze\n";
+        kolory(7);
+        if (n == 4){
+            kolory(1);
+            cout << " " << char(175) << " ";
+        }
         cout << "Wyjdz z gry\n";
         kolory(7);
         int i = getch();
         if(i == 0 || i == 224){
             i = getch();
             if (i == 72 && n > 0) n--;
-            else if (i == 80 && n < 3) n++;
+            else if (i == 80 && n < 4) n++;
         }
         if(i == 13){
             switch (n){
@@ -1053,6 +1072,9 @@ void startMenu(){
                 saveSettings(size, pasekLadowania, mapKeyType);
                 break;
             case 3:
+                opisGry();
+                break;
+            case 4:
                 exit(0);
             }
         }
