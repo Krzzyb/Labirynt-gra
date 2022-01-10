@@ -1,0 +1,6 @@
+text size: 
+20
+pasek ladowania: 
+true
+legenda: 
+gra

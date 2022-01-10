@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <cmath>
+#include <string>
 
 using namespace std;
 int X, Y;
@@ -347,42 +348,50 @@ void saveSettings(int size, bool pasekLadowania, string mapKeyType){
     if (pasekLadowania == false){
         pasekLadowaniaString = "false";
     }
-    fstream plik;
-    plik.open("C:\\Intel\\Labirynt_gra\\settings.txt", ios::out);
+    ofstream plik("settings.txt");
+    
     plik << "text size: \n" << size << endl;
     plik << "pasek ladowania: \n" << pasekLadowaniaString << endl;
     plik << "legenda: \n" << mapKeyType << endl;
     plik.close();
 }
 void loadSettings(int &size, bool &pasekLadowania, string &mapKeyType){
-    fstream plik;
-    string linijka;
-    plik.open("C:\\Intel\\Labirynt_gra\\settings.txt", ios::in);
-    if(plik.is_open()){
-        getline(plik, linijka);
-        getline(plik, linijka);
-        size = stoi(linijka);
-        getline(plik, linijka);
-        getline(plik, linijka);
-        if(linijka == "true"){
-            pasekLadowania = true;
-        }
-        if(linijka == "false"){
-            pasekLadowania = false;
-        }
-        getline(plik, linijka);
-        getline(plik, linijka);
-        mapKeyType = linijka;
+    ifstream plik("settings.txt");
+    if(!plik.is_open()){
+        ofstream plik("settings.txt");
+        size = 20;
+        pasekLadowania = true;
+        mapKeyType = "gra";
+        saveSettings(size, pasekLadowania, mapKeyType);
     }else{
-        cout << "Nie otwarto pliku" << endl;
+        string linijka;
+        if(plik.is_open()){
+            getline(plik, linijka);
+            getline(plik, linijka);
+            size = stoi(linijka);
+            getline(plik, linijka);
+            getline(plik, linijka);
+            if(linijka == "true"){
+                pasekLadowania = true;
+            }
+            if(linijka == "false"){
+                pasekLadowania = false;
+            }
+            getline(plik, linijka);
+            getline(plik, linijka);
+            mapKeyType = linijka;
+        }else{
+            cout << "Nie otwarto pliku" << endl;
+        }
+        plik.close();
     }
-    plik.close();
+    
 }
-void loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
-    fstream plik;
+int loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
+    ifstream plik("zapis_gry.txt");
     string linijka;
     
-    plik.open("C:\\Intel\\Labirynt_gra\\zapis_gry.txt", ios::in);
+    //plik.open("C:\\Intel\\Labirynt_gra\\zapis_gry.txt", ios::in);
     if(plik.is_open()){
         getline(plik, linijka);
         getline(plik, linijka);
@@ -412,8 +421,9 @@ void loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
             }
         }
     }else{
-        cout << "Nie otwarto pliku" << endl;
+        cout << "Nie otwarto pliku - prawdopodobnie jeszcze go nie ma, sprobuj zapisac najpierw jakas gre." << endl;
         getchar();
+        return 1;
     }
     plik.close();
     cout << lives << " " << x << " " << y << endl;
@@ -424,14 +434,12 @@ void loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
         cout << endl;
     }
     system("CLS");
+    return 0;
 }
 void saveGame (int x, int y, int lives, int luckFactor, string wyposazenie){
-    string nazwa = "C:\\Intel\\Labirynt_gra\\";
-    string tmp = "zapis_gry";
-    //cin >> tmp; moze gdzies w przyszlosci zostanie dodane menu roznych zapisow gry
-    tmp = nazwa + tmp + ".txt";
-    fstream plik;
-    plik.open(tmp.c_str(), ios::out);
+    
+    ofstream plik("zapis_gry.txt");
+    //plik.open(tmp.c_str(), ios::out);
     plik << "lives: \n" << lives << endl;
     plik << "player coordinates: \n" << x << endl << y << endl;
     plik << "luckFactor: \n" << luckFactor << endl;
@@ -1027,7 +1035,9 @@ void startMenu(){
                 break; 
             case 1:
                 system("CLS");
-                loadGame(x, y, lives, luckFactor, wyposazenie);
+                if(loadGame(x, y, lives, luckFactor, wyposazenie)==1){
+                    break;
+                }
                 przebieg(lives, x, y, luckFactor, wyposazenie, mapKeyType);
                 break;
             case 2:
