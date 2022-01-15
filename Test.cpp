@@ -202,6 +202,7 @@ Beep (932,100);Sleep(125);
 Beep (1046,675);
 }
 int main(){
+    PlaySound(TEXT("mysound.wav"), NULL, SND_FILENAME | SND_ASYNC);
     for (int i = 0; i<256; i++){
         kolor(i);
         cout << i<< endl;

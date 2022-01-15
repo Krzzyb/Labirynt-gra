@@ -4,7 +4,9 @@
 #include <string>
 #include <dirent.h>
 #include <stdio.h>
+#include <filesystem>
 using namespace std;
+//namespace fs = std::filesystem;
 
 void listFiles(const char* dirname) {
     DIR* dir = opendir(dirname);
@@ -107,8 +109,11 @@ plik.open("C:\\Intel\\test.txt", ios::in);
     }
     file.close();
     system("pause");*/
-    int tabela[40][20] = {0};
-    int x = 1, y = 1, lives = 0;
-    loadGame(tabela, x, y, lives);
+    //int tabela[40][20] = {0};
+    //int x = 1, y = 1, lives = 0;
+    //loadGame(tabela, x, y, lives);
+    char command[50] = "ls -l";
+    system(command);
+    getchar();
 return 0;
 }

@@ -994,6 +994,62 @@ void mainOptions(int &size, bool &pasekLadowania, string &mapKeyType){
         }
     }
 }
+int fileMenu(int &x, int &y, int &lives, int &luckFactor, string&wyposazenie){
+    int n = 0;
+    while (true){
+        system("CLS");
+        cout << "____Kontrola plikow____\n";
+        if (n == 0){ 
+            kolory(1);
+            cout << " " << char(175) << " ";
+            }
+        cout << "Zaladuj gre\n";
+        kolory(7);
+        if (n == 1){
+            kolory(1); 
+            cout << " " << char(175) << " ";
+            }
+        cout << "Usun zapis\n";
+        kolory(7);
+        int i = getch();
+        if(i == 0 || i == 224){
+            i = getch();
+            if (i == 72 && n > 0) n--;
+            else if (i == 80 && n < 4) n++;
+        }
+        if(i == 27) return 1;
+        if(i == 13){
+            switch (n){
+            case 0:
+                system("CLS");
+                if(loadGame(x, y, lives, luckFactor, wyposazenie)==1){
+                    break;
+                }
+                else return 0;
+            case 1:
+                string saveName;
+                system("CLS");
+                cout << "Jaki zapis chcesz usunac?\n";
+                cin >> saveName;
+                saveName = saveName + ".txt";
+                const char * charName = saveName.c_str();
+                
+                if(remove(charName) != 0 ){
+                    kolory(4);
+                    cout << "Zapis NIE zostal usuniety, sprawdz pisownie";
+                    Sleep(1000);
+                }else{
+                    kolory(10);
+                    cout << "Usunieto zapis";
+                    Sleep(1000);
+                }
+                kolory(7);
+                break;
+                
+            }
+        }
+    }
+}
 
 void startMenu(){
     kolory(7);
@@ -1017,7 +1073,7 @@ void startMenu(){
             kolory(1); 
             cout << " " << char(175) << " ";
             }
-        cout << "Zaladuj gre\n";
+        cout << "Kontrola zapisow\n";
         kolory(7);
         if (n == 2){ 
             kolory(1);
@@ -1062,7 +1118,7 @@ void startMenu(){
                 break; 
             case 1:
                 system("CLS");
-                if(loadGame(x, y, lives, luckFactor, wyposazenie)==1){
+                if(fileMenu(x, y, lives, luckFactor, wyposazenie) == 1){
                     break;
                 }
                 przebieg(lives, x, y, luckFactor, wyposazenie, mapKeyType);
