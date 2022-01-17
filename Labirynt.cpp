@@ -9,8 +9,9 @@
 #include <string>
 
 using namespace std;
-int X, Y;
+int X, Y, iloscPlansz;
 int **tablica;
+
 void create(){
     tablica = new int*[Y];
     for(int j = 0; j < Y; j++){
@@ -387,9 +388,9 @@ void loadSettings(int &size, bool &pasekLadowania, string &mapKeyType){
     }
     
 }
-int loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
+int loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie, int &numerekPlanszy){
     string saveName;
-    cout << "Jak nazywa sie zapis ktory chcesz otworzyc?\n";
+    cout << "Jak nazywa sie zapis, ktory chcesz otworzyc?\n";
     cin >> saveName;
     ifstream plik(saveName + ".txt");
     string linijka;
@@ -410,6 +411,12 @@ int loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
         getline(plik, linijka);
         getline(plik, linijka);
         wyposazenie = linijka;
+        getline(plik, linijka);
+        getline(plik, linijka);
+        iloscPlansz = stoi(linijka);
+        getline(plik, linijka);
+        getline(plik, linijka);
+        numerekPlanszy = stoi(linijka);
         getline(plik, linijka);
         getline(plik, linijka);
         X = stoi(linijka);
@@ -442,7 +449,7 @@ int loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie){
     system("CLS");
     return 0;
 }
-void saveGame (int x, int y, int lives, int luckFactor, string wyposazenie){
+void saveGame (int x, int y, int lives, int luckFactor, string wyposazenie, int numerekPlanszy){
     string saveName;
     cout << "Jak chcesz nazwac zapis swojej rozgrywki?\n";
     cin >> saveName;
@@ -452,6 +459,8 @@ void saveGame (int x, int y, int lives, int luckFactor, string wyposazenie){
     plik << "player coordinates: \n" << x << endl << y << endl;
     plik << "luckFactor: \n" << luckFactor << endl;
     plik << "equipment: \n" << wyposazenie << endl;
+    plik << "iloscPlansz: \n" << iloscPlansz << endl;
+    plik << "numerekPlanszy: \n" << numerekPlanszy << endl;
     plik << "matrix size x, y: \n" << X << endl << Y << endl;
     for (int i = 0; i < Y; i++) {
         for (int j = 0; j < X; j++) {
@@ -604,6 +613,7 @@ int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luck
                 hospitals = ceil(15.00*(X*Y-X-Y)/740.00);
                 lives = 8;
                 luckFactor = 5;
+                iloscPlansz = 3;
                 return 0;
             case 1:
                 bombs = ceil(80.00*(X*Y-X-Y)/740.00);
@@ -611,6 +621,7 @@ int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luck
                 hospitals = ceil(8.00*(X*Y-X-Y)/740.00);
                 lives = 5;
                 luckFactor = 2;
+                iloscPlansz = 5;
                 return 0;
             case 2:
                 bombs = ceil(150.00*(X*Y-X-Y)/740.00);
@@ -618,6 +629,7 @@ int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luck
                 hospitals = ceil(3.00*(X*Y-X-Y)/740.00);
                 lives = 3;
                 luckFactor = 0;
+                iloscPlansz = 8;
                 return 0;
             case 3:
                 do{
@@ -638,6 +650,8 @@ int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luck
                 }while(X*Y - X - Y < bombs + boxes + hospitals);
                 cout << "Ile zyc?  -  ";
                 cin >> lives;
+                cout << "Ile plansz? - ";
+                cin >> iloscPlansz;
                 cout << "Jaki luckFactor?\n" << "(jest to wartosc od 0 do 10, ktora definuje szczescie w losowaniu wyposazenia\n";
                 cout << " - jesli chcesz miec pewnosc, ze zawsze cos wylosujesz, wpisz wartosc wieksza niz 10):\n";
                 cin >> luckFactor;
@@ -748,7 +762,7 @@ void opisGry(){
     cout << "\t\t\tMade by Krzysztof Zybura";
     getchar();
 }
-int menu(int x, int y, int lives, int luckFactor, string wyposazenie, string mapKeyType){
+int menu(int x, int y, int lives, int luckFactor, string wyposazenie, string mapKeyType, int numerekPlanszy){
     system("CLS");
     kolory(7);
     int n = 0;
@@ -796,7 +810,7 @@ int menu(int x, int y, int lives, int luckFactor, string wyposazenie, string map
                 return 1;
             case 1:
                 system("CLS");
-                saveGame(x, y, lives, luckFactor, wyposazenie);
+                saveGame(x, y, lives, luckFactor, wyposazenie, numerekPlanszy);
                 cout << "Zapisano";
                 break;
             case 2:
@@ -810,7 +824,7 @@ int menu(int x, int y, int lives, int luckFactor, string wyposazenie, string map
     
     
 }
-void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie, string mapKeyType){
+int przebieg(int lives, int x, int y, int luckFactor, string wyposazenie, string mapKeyType, int numerekPlanszy){
     int setlives = lives;
     livescounter(lives);
     cout << endl;
@@ -819,9 +833,9 @@ void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie, strin
         int rozmiary = Y, rozmiarx = X;
         int i = getch();
         if (i == 27){
-            int wynikMenu = menu(x, y, lives, luckFactor, wyposazenie, mapKeyType);
+            int wynikMenu = menu(x, y, lives, luckFactor, wyposazenie, mapKeyType, numerekPlanszy);
             if(wynikMenu == 0){
-                return;
+                return 1;
             }
         } 
         if (i == 0 || i == 224){
@@ -851,10 +865,10 @@ void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie, strin
                 lives = setlives;
             }
             if( x+1 == X && y+1 == Y){
-                surpriseSound();
-                cout<<"Gratulacje! Dotarles do punktu zbiorki - jestes teraz bezpieczny.\n";
-                cout << "Nacisnij ENTER, aby wrocic do main Menu";
-                getchar();
+                if(numerekPlanszy + 1 < iloscPlansz){
+                cout<<"Przechodzisz do nastepnej planszy\n";
+                Sleep(1000);
+                }
                 break;
             }
             livescounter(lives);
@@ -873,6 +887,7 @@ void przebieg(int lives, int x, int y, int luckFactor, string wyposazenie, strin
         cout << "nacisnij ENTER, aby wrocic do main Menu\n";
         getchar();
     }
+    return 0;
 }
 void mainOptions(int &size, bool &pasekLadowania, string &mapKeyType){
     kolory(7);
@@ -994,7 +1009,7 @@ void mainOptions(int &size, bool &pasekLadowania, string &mapKeyType){
         }
     }
 }
-int fileMenu(int &x, int &y, int &lives, int &luckFactor, string&wyposazenie){
+int fileMenu(int &x, int &y, int &lives, int &luckFactor, string&wyposazenie, int &numerekPlanszy){
     int n = 0;
     while (true){
         system("CLS");
@@ -1022,7 +1037,7 @@ int fileMenu(int &x, int &y, int &lives, int &luckFactor, string&wyposazenie){
             switch (n){
             case 0:
                 system("CLS");
-                if(loadGame(x, y, lives, luckFactor, wyposazenie)==1){
+                if(loadGame(x, y, lives, luckFactor, wyposazenie, numerekPlanszy)==1){
                     break;
                 }
                 else return 0;
@@ -1054,7 +1069,7 @@ int fileMenu(int &x, int &y, int &lives, int &luckFactor, string&wyposazenie){
 void startMenu(){
     kolory(7);
     int n = 0, x = 0, y = 0;
-    int bombs, boxes, hospitals, lives, size, luckFactor;
+    int bombs, boxes, hospitals, lives, size, luckFactor, numerekPlanszy;
     string wyposazenie, mapKeyType;
     bool pasekLadowania = true;
     
@@ -1105,23 +1120,55 @@ void startMenu(){
                 x = 0, y = 0;
                 
                 wyposazenie = "nic";
+                numerekPlanszy = 0;
                 
                 if(newGameOptions(bombs, boxes, hospitals, lives, luckFactor) == 1){ 
                     break;
                 }
+                while(numerekPlanszy < iloscPlansz){
+                    randPath();
+                    system("CLS");
+                    randItems(bombs, boxes, hospitals, pasekLadowania);
+                    int wynikPrzebieg = przebieg(lives, x, y, luckFactor, wyposazenie, mapKeyType, numerekPlanszy);
+                    if (wynikPrzebieg == 1){
+                        break;
+                    }
+                    resetArray();
+                    numerekPlanszy++;
+                }
+                if(numerekPlanszy == iloscPlansz){
+                    surpriseSound();
+                    cout<<"Gratulacje! Dotarles do punktu zbiorki - jestes teraz bezpieczny.\n";
+                    cout << "Nacisnij ENTER, aby wrocic do main Menu\n";
+                    Sleep(200);
+                    getchar();
+                }
                 
-                randPath();
-                system("CLS");
-                randItems(bombs, boxes, hospitals, pasekLadowania);
-                przebieg(lives, x, y, luckFactor, wyposazenie, mapKeyType);
-                resetArray();
-                break; 
+                break;
+                
             case 1:
                 system("CLS");
-                if(fileMenu(x, y, lives, luckFactor, wyposazenie) == 1){
+                if(fileMenu(x, y, lives, luckFactor, wyposazenie, numerekPlanszy) == 1){
                     break;
                 }
-                przebieg(lives, x, y, luckFactor, wyposazenie, mapKeyType);
+                while(numerekPlanszy < iloscPlansz){
+                    system("CLS");
+                    int wynikPrzebieg = przebieg(lives, x, y, luckFactor, wyposazenie, mapKeyType, numerekPlanszy);
+                    if (wynikPrzebieg == 1){
+                        break;
+                    }
+                    resetArray();
+                    randPath();
+                    randItems(bombs, boxes, hospitals, pasekLadowania);
+                    numerekPlanszy++;
+                }
+                if(numerekPlanszy == iloscPlansz){
+                    surpriseSound();
+                    cout<<"Gratulacje! Dotarles do punktu zbiorki - jestes teraz bezpieczny.\n";
+                    cout << "Nacisnij ENTER, aby wrocic do main Menu\n";
+                    Sleep(200);
+                    getchar();
+                }
                 break;
             case 2:
                 mainOptions(size, pasekLadowania, mapKeyType);
