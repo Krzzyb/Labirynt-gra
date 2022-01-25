@@ -1,5 +1,6 @@
 #include<iostream>
 #include<cstdlib>
+#include<windows.h>
 
 using namespace std;
 
@@ -45,5 +46,6 @@ int main()
 
  delete [] matrix;
 getchar();
+PlaySound(("Testsound"), NULL,SND_SYNC);
  return 0;
 }

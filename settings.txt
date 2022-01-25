@@ -1,6 +1,6 @@
 text size: 
-20
+15
 pasek ladowania: 
 true
 legenda: 
-gra
+brak
