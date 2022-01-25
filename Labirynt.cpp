@@ -111,27 +111,27 @@ void prettyShow(int x, int y) {
                     kolory(100);
                     cout << char(15);
                 }
-                if (tablica[j][i] == 1) {
+                else if (tablica[j][i] == 1) {
                     kolory(10);
                     cout << char(176);
                 }
-                if (tablica[j][i] == 0) {
+                else if (tablica[j][i] == 0) {
                     kolory(102);
                     cout << char(219);
                 }
-                if (tablica[j][i] == 3){
+                else if (tablica[j][i] == 3){
                     kolory(109);
                     cout << char(14);
                 }
-                if (tablica[j][i] == 4){
+                else if (tablica[j][i] == 4){
                     kolory(108);
                     cout << char(127);
                 }
-                if (tablica[j][i] == 5){
+                else if (tablica[j][i] == 5){
                     kolory(128);
                     cout << char(158);
                 }
-                if(tablica[j][i] == 6){
+                else if(tablica[j][i] == 6){
                     kolory(104);
                     cout << char(14);
                 }
@@ -155,19 +155,19 @@ void darkShow(int x, int y, string wyposazenie, string mapKeyType){
                         kolory(108);
                         cout << char(127);
                     }
-                    if(tablica[j][i] == 3){
+                    else if(tablica[j][i] == 3){
                         kolory(109);
                         cout << char(14);
                     }
-                    if(tablica[j][i] == 0 || tablica[j][i] == 1 || tablica[j][i] == 2){
+                    else if(tablica[j][i] == 0 || tablica[j][i] == 1 || tablica[j][i] == 2){
                         kolory(108);
                         cout << " ";
                     }
-                    if(tablica[j][i] == 5){
+                    else if(tablica[j][i] == 5){
                         kolory(128);
                         cout << char(158);
                     }
-                    if(tablica[j][i] == 6){
+                    else if(tablica[j][i] == 6){
                         kolory(104);
                         cout << char(14);
                     }
@@ -191,27 +191,27 @@ void darkShow(int x, int y, string wyposazenie, string mapKeyType){
                         kolory(100);
                         cout << char(15);
                     }
-                    if (tablica[j][i] == 0) {
+                    else if (tablica[j][i] == 0) {
                         kolory(102); 
                         cout << char(219);
                     }
-                    if (tablica[j][i] == 3){
+                    else if (tablica[j][i] == 3){
                         kolory(109);
                         cout << char(14);
                     }
-                    if (tablica[j][i] == 4){
+                    else if (tablica[j][i] == 4){
                         kolory(108);
                         cout << char(127);
                     }
-                    if (tablica[j][i] == 5){
+                    else if (tablica[j][i] == 5){
                         kolory(128);
                         cout << char(158);
                     }
-                    if (tablica[j][i] == 1){
+                    else if (tablica[j][i] == 1){
                         kolory(102);
                         cout << char(219);
                     }
-                    if(tablica[j][i] == 6){
+                    else if(tablica[j][i] == 6){
                         kolory(104);
                         cout << char(14);
                     }
@@ -221,19 +221,19 @@ void darkShow(int x, int y, string wyposazenie, string mapKeyType){
                         kolory(108);
                         cout << char(127);
                     }
-                    if(tablica[j][i] == 3){
+                    else if(tablica[j][i] == 3){
                         kolory(109);
                         cout << char(14);
                     }
-                    if(tablica[j][i] == 0 || tablica[j][i] == 1 || tablica[j][i] == 2){
+                    else if(tablica[j][i] == 0 || tablica[j][i] == 1 || tablica[j][i] == 2){
                         kolory(108);
                         cout << " ";
                     }
-                    if(tablica[j][i] == 5){
+                    else if(tablica[j][i] == 5){
                         kolory(128);
                         cout << char(158);
                     }
-                    if(tablica[j][i] == 6){
+                    else if(tablica[j][i] == 6){
                         kolory(104);
                         cout << char(14);
                     }
@@ -265,27 +265,27 @@ void darkShow(int x, int y, string wyposazenie, string mapKeyType){
                         kolory(100);
                         cout << char(15);
                     }
-                    if (tablica[j][i] == 0) {
+                    else if (tablica[j][i] == 0) {
                         kolory(102); 
                         cout << char(219);
                     }
-                    if (tablica[j][i] == 3){
+                    else if (tablica[j][i] == 3){
                         kolory(109);
                         cout << char(14);
                     }
-                    if (tablica[j][i] == 4){
+                    else if (tablica[j][i] == 4){
                         kolory(108);
                         cout << char(127);
                     }
-                    if (tablica[j][i] == 5){
+                    else if (tablica[j][i] == 5){
                         kolory(128);
                         cout << char(158);
                     }
-                    if (tablica[j][i] == 1){
+                    else if (tablica[j][i] == 1){
                         kolory(102);
                         cout << char(219);
                     }
-                    if(tablica[j][i] == 6){
+                    else if(tablica[j][i] == 6){
                         kolory(104);
                         cout << char(14);
                     }
@@ -295,19 +295,19 @@ void darkShow(int x, int y, string wyposazenie, string mapKeyType){
                         kolory(108);
                         cout << char(127);
                     }
-                    if(tablica[j][i] == 3){
+                    else if(tablica[j][i] == 3){
                         kolory(109);
                         cout << char(14);
                     }
-                    if(tablica[j][i] == 0 || tablica[j][i] == 1 || tablica[j][i] == 2){
+                    else if(tablica[j][i] == 0 || tablica[j][i] == 1 || tablica[j][i] == 2){
                         kolory(108);
                         cout << " ";
                     }
-                    if(tablica[j][i] == 5){
+                    else if(tablica[j][i] == 5){
                         kolory(128);
                         cout << char(158);
                     }
-                    if(tablica[j][i] == 6){
+                    else if(tablica[j][i] == 6){
                         kolory(104);
                         cout << char(14);
                     }
