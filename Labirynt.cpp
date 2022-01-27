@@ -9,7 +9,7 @@
 #include <string>
 
 using namespace std;
-int X, Y, iloscPlansz;
+int X, Y, iloscPlansz, lives;
 int **tablica;
 
 void create(){
@@ -388,7 +388,7 @@ void loadSettings(int &size, bool &pasekLadowania, string &mapKeyType){
     }
     
 }
-int loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie, int &numerekPlanszy){
+int loadGame(int &x, int &y, int &luckFactor, string &wyposazenie, int &numerekPlanszy){
     string saveName;
     cout << "Jak nazywa sie zapis, ktory chcesz otworzyc?\n";
     cin >> saveName;
@@ -449,7 +449,7 @@ int loadGame(int &x, int &y, int &lives, int &luckFactor, string &wyposazenie, i
     system("CLS");
     return 0;
 }
-void saveGame (int x, int y, int lives, int luckFactor, string wyposazenie, int numerekPlanszy){
+void saveGame (int x, int y, int luckFactor, string wyposazenie, int numerekPlanszy){
     string saveName;
     cout << "Jak chcesz nazwac zapis swojej rozgrywki?\n";
     cin >> saveName;
@@ -488,7 +488,7 @@ void randPath() {
         }
     }while (tablica[Y-1][X-1] == 0);
 }
-int newGameOptions(int &bombs, int &boxes, int &hospitals, int &lives, int &luckFactor){
+int newGameOptions(int &bombs, int &boxes, int &hospitals, int &luckFactor){
     bombs = 0;
     boxes = 0;
     hospitals = 0;
@@ -743,7 +743,7 @@ void randItems(int bombs, int boxes, int hospitals, bool pasekLadowania) {
     getchar();
     system("CLS");
 }
-void livescounter(int lives){
+void livescounter(){
     for(int i=0; i<lives; i++){
         kolory(4);
         cout<<char(3);
@@ -762,7 +762,7 @@ void opisGry(){
     cout << "\t\t\tMade by Krzysztof Zybura";
     getchar();
 }
-int menu(int x, int y, int lives, int luckFactor, string wyposazenie, string mapKeyType, int numerekPlanszy){
+int menu(int x, int y, int luckFactor, string wyposazenie, string mapKeyType, int numerekPlanszy){
     system("CLS");
     kolory(7);
     int n = 0;
@@ -804,13 +804,13 @@ int menu(int x, int y, int lives, int luckFactor, string wyposazenie, string map
             switch (n){
             case 0:
                 system("CLS");
-                livescounter(lives);
+                livescounter();
                 cout << endl;
                 darkShow(x,y,"nic", mapKeyType);
                 return 1;
             case 1:
                 system("CLS");
-                saveGame(x, y, lives, luckFactor, wyposazenie, numerekPlanszy);
+                saveGame(x, y, luckFactor, wyposazenie, numerekPlanszy);
                 cout << "Zapisano";
                 break;
             case 2:
@@ -824,16 +824,16 @@ int menu(int x, int y, int lives, int luckFactor, string wyposazenie, string map
     
     
 }
-int przebieg(int lives, int x, int y, int luckFactor, string wyposazenie, string mapKeyType, int numerekPlanszy){
+int przebieg( int x, int y, int luckFactor, string wyposazenie, string mapKeyType, int numerekPlanszy){
     int setlives = lives;
-    livescounter(lives);
+    livescounter();
     cout << endl;
     darkShow(x, y, wyposazenie, mapKeyType);
     while (lives>0) {
         int rozmiary = Y, rozmiarx = X;
         int i = getch();
         if (i == 27){
-            int wynikMenu = menu(x, y, lives, luckFactor, wyposazenie, mapKeyType, numerekPlanszy);
+            int wynikMenu = menu(x, y, luckFactor, wyposazenie, mapKeyType, numerekPlanszy);
             if(wynikMenu == 0){
                 return 1;
             }
@@ -864,14 +864,14 @@ int przebieg(int lives, int x, int y, int luckFactor, string wyposazenie, string
             if(tablica[y][x] == 4){
                 lives = setlives;
             }
-            if( x+1 == X && y+1 == Y){
+            if(x+1 == X && y+1 == Y){
                 if(numerekPlanszy + 1 < iloscPlansz){
                 cout<<"Przechodzisz do nastepnej planszy\n";
                 Sleep(1000);
                 }
                 break;
             }
-            livescounter(lives);
+            livescounter();
             cout<<endl;
             darkShow(x,y,wyposazenie, mapKeyType);
         }
@@ -1009,7 +1009,7 @@ void mainOptions(int &size, bool &pasekLadowania, string &mapKeyType){
         }
     }
 }
-int fileMenu(int &x, int &y, int &lives, int &luckFactor, string&wyposazenie, int &numerekPlanszy){
+int fileMenu(int &x, int &y, int &luckFactor, string&wyposazenie, int &numerekPlanszy){
     int n = 0;
     while (true){
         system("CLS");
@@ -1037,7 +1037,7 @@ int fileMenu(int &x, int &y, int &lives, int &luckFactor, string&wyposazenie, in
             switch (n){
             case 0:
                 system("CLS");
-                if(loadGame(x, y, lives, luckFactor, wyposazenie, numerekPlanszy)==1){
+                if(loadGame(x, y, luckFactor, wyposazenie, numerekPlanszy)==1){
                     break;
                 }
                 else return 0;
@@ -1069,7 +1069,7 @@ int fileMenu(int &x, int &y, int &lives, int &luckFactor, string&wyposazenie, in
 void startMenu(){
     kolory(7);
     int n = 0, x = 0, y = 0;
-    int bombs, boxes, hospitals, lives, size, luckFactor, numerekPlanszy;
+    int bombs, boxes, hospitals, size, luckFactor, numerekPlanszy;
     string wyposazenie, mapKeyType;
     bool pasekLadowania = true;
     
@@ -1122,14 +1122,14 @@ void startMenu(){
                 wyposazenie = "nic";
                 numerekPlanszy = 0;
                 
-                if(newGameOptions(bombs, boxes, hospitals, lives, luckFactor) == 1){ 
+                if(newGameOptions(bombs, boxes, hospitals, luckFactor) == 1){ 
                     break;
                 }
                 while(numerekPlanszy < iloscPlansz){
                     randPath();
                     system("CLS");
                     randItems(bombs, boxes, hospitals, pasekLadowania);
-                    int wynikPrzebieg = przebieg(lives, x, y, luckFactor, wyposazenie, mapKeyType, numerekPlanszy);
+                    int wynikPrzebieg = przebieg(x, y, luckFactor, wyposazenie, mapKeyType, numerekPlanszy);
                     if (wynikPrzebieg == 1){
                         break;
                     }
@@ -1148,12 +1148,12 @@ void startMenu(){
                 
             case 1:
                 system("CLS");
-                if(fileMenu(x, y, lives, luckFactor, wyposazenie, numerekPlanszy) == 1){
+                if(fileMenu(x, y, luckFactor, wyposazenie, numerekPlanszy) == 1){
                     break;
                 }
                 while(numerekPlanszy < iloscPlansz){
                     system("CLS");
-                    int wynikPrzebieg = przebieg(lives, x, y, luckFactor, wyposazenie, mapKeyType, numerekPlanszy);
+                    int wynikPrzebieg = przebieg(x, y, luckFactor, wyposazenie, mapKeyType, numerekPlanszy);
                     if (wynikPrzebieg == 1){
                         break;
                     }
