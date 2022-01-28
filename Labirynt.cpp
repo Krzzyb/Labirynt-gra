@@ -7,6 +7,7 @@
 #include <fstream>
 #include <cmath>
 #include <string>
+#include <winuser.h>
 
 using namespace std;
 int X, Y, iloscPlansz, lives;
@@ -54,9 +55,10 @@ void bombSound(){
     Beep (200,500);Sleep(125);
 }
 void betterClearBoard(){
-    // Zamiast system('CLS') - które jest mało wydajne i niebezpieczne, użyję kodów ASCII do czyszczenia ekranu gry
-    cout << "\x1B[2J";
+    // Zamiast system('CLS') - które jest mało wydajne, użyję kodów ANSI do czyszczenia ekranu gry
+    cout << "\x1B[0J\x1B[1J";
     cout << "\x1B[" << X + 11 << "F";
+    
 }
 void pokaz() {
     for (int i = 0; i < Y; i++) {
@@ -79,8 +81,8 @@ void equipment(string wyposazenie){
         cout << " - wykrywacz metalu (dziala na kratke do przodu, do tylu i na boki)\n";
     }
     if(wyposazenie == "sonar"){
-        cout << " - wykrywacz metalu (dziala na kratke do przodu, do tylu i na boki\n";
-        cout << " - sonar (dziala jak wykrywacz metalu, ale na wieksza odleglosc\n";
+        cout << " - wykrywacz metalu (dziala na kratke do przodu, do tylu i na boki)\n";
+        cout << " - sonar (dziala jak wykrywacz metalu, ale na wieksza odleglosc)\n";
     }
     cout << "________________________________________\n";
 }
@@ -1187,5 +1189,6 @@ void startMenu(){
 int main()
 {
     SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE),CONSOLE_FULLSCREEN_MODE,0);
+    ShowScrollBar(GetConsoleWindow(), SB_VERT, 0);
     startMenu();
 }
